@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clube do Livro - Meu Painel</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <h1>📖 Meu Clube</h1>
+        </div>
+        <nav style="display: flex; align-items: center; gap: 1.5rem;">
+            <span id="user-display-name" style="font-weight: 600; color: var(--marrom-cozy);">Carregando...</span>
+            <button id="btn-logout" class="btn-login" style="background: none; cursor: pointer;">Sair</button>
+        </nav>
+    </header>
+
+    <main style="display: block; padding: 2rem 10%;">
+        
+        <section class="welcome-banner">
+            <h2>Que bom que você está aqui hoje! ✨</h2>
+            <p>Prepare sua bebida favorita, escolha um marcador de páginas e aproveite sua leitura.</p>
+        </section>
+
+        <div class="dashboard-grid">
+            
+            <div class="dash-card">
+                <h3>📚 Minha Estante Virtual</h3>
+                <p>Gerencie suas leituras atuais, livros lidos e suas metas para o ano.</p>
+                <a href="#" class="btn-cta" style="margin-top: 1rem; font-size: 1rem; padding: 0.6rem 1.5rem;">Ver Minha Estante</a>
+            </div>
+
+            <div class="dash-card">
+                <h3>☕ Meus Clubes de Leitura</h3>
+                <p>Você ainda não participa de nenhum clube de leitura ativo no momento.</p>
+                <a href="#" class="btn-cta" style="margin-top: 1rem; font-size: 1rem; padding: 0.6rem 1.5rem; background-color: var(--marrom-suave); color: white;">Explorar Clubes</a>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Clube do Livro. Desenvolvido com ❤️</p>
+    </footer>
+
+    <script type="module" src="../js/dashboard.js"></script>
+
+</body>
+</html>
