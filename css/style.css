@@ -17,7 +17,7 @@
 * {
     margin: 0;
     padding: 0;
-    box-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
@@ -243,4 +243,66 @@ footer {
 /* A classe mágica que esconde elementos */
 .d-none {
     display: none !important;
+}
+
+/* ==========================================
+   5. PÁGINA DE DASHBOARD (PAINEL INTERNO)
+   ========================================== */
+
+/* Banner de boas-vindas superior */
+.welcome-banner {
+    background-color: var(--branco-puro);
+    padding: 2rem;
+    border-radius: 20px;
+    margin-bottom: 2rem;
+    border-left: 5px solid var(--rosa-pastel-medio); /* Um detalhe charmoso na esquerda */
+    box-shadow: 0 4px 15px rgba(92, 64, 51, 0.03);
+}
+
+.welcome-banner h2 {
+    font-size: 1.8rem;
+    color: var(--marrom-cozy);
+    margin-bottom: 0.5rem;
+}
+
+.welcome-banner p {
+    color: var(--marrom-suave);
+}
+
+/* Organização dos Cards em colunas (Lado a lado) */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+/* Estilo individual de cada Card da Dashboard */
+.dash-card {
+    background-color: var(--branco-puro);
+    padding: 2rem;
+    border-radius: 25px;
+    border: 1px solid rgba(243, 198, 206, 0.4);
+    box-shadow: 0 8px 20px rgba(92, 64, 51, 0.04);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    transition: transform 0.3s ease;
+}
+
+.dash-card:hover {
+    transform: translateY(-4px); /* Efeito flutuante sutil ao passar o mouse */
+}
+
+.dash-card h3 {
+    font-size: 1.3rem;
+    color: var(--marrom-cozy);
+    margin-bottom: 1rem;
+}
+
+.dash-card p {
+    color: var(--marrom-suave);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
 }
