@@ -1,0 +1,31 @@
+/* ==========================================
+   CONFIGURAÇÕES GERAIS E PALETA DE CORES (COZY)
+   ========================================== */
+:root {
+    /* Cores Principais */
+    --rosa-pastel-claro: #FFF0F2;  /* Fundo ultra suave */
+    --rosa-pastel-medio: #F3C6CE;  /* Detalhes, botões e destaques fofos */
+    --marrom-cozy: #5C4033;        /* Textos principais e cabeçalhos (tom de café/chocolate) */
+    --marrom-suave: #8B6553;       /* Textos secundários e bordas */
+    --branco-puro: #FFFFFF;
+    
+    /* Fontes */
+    --fonte-principal: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Reset básico para tirar as margens padrão do navegador */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--fonte-principal);
+    background-color: var(--rosa-pastel-claro);
+    color: var(--marrom-cozy);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
