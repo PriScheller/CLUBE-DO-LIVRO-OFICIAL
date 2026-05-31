@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clube do Livro - Entrar ou Cadastrar</title>
+    <!-- Buscando o CSS que está na pasta anterior -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <!-- CABEÇALHO (Mantendo o padrão da página inicial, mas com link para voltar) -->
+    <header>
+        <div class="logo">
+            <h1><a href="../index.html" style="text-decoration: none; color: var(--marrom-cozy);">📖 Meu Clube</a></h1>
+        </div>
+        <nav>
+            <a href="../index.html" class="btn-login">Voltar ao Início</a>
+        </nav>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL (Card de Login e Cadastro) -->
+    <main>
+        <div class="login-container">
+            
+            <!-- Abas para alternar entre Login e Cadastro (Isso vai ser controlado pelo JS no futuro) -->
+            <div class="auth-tabs">
+                <button id="tab-login" class="tab-btn active">Entrar</button>
+                <button id="tab-cadastro" class="tab-btn">Criar Conta</button>
+            </div>
+
+            <!-- FORMULÁRIO 1: LOGIN (Aparece por padrão) -->
+            <form id="form-login" class="auth-form">
+                <h3>Que bom te ver de volta!</h3>
+                
+                <div class="input-group">
+                    <label for="login-email">E-mail</label>
+                    <input type="email" id="login-email" placeholder="seu.email@exemplo.com" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="login-senha">Senha</label>
+                    <input type="password" id="login-senha" placeholder="Sua senha secreta" required>
+                </div>
+
+                <button type="submit" class="btn-cta" style="width: 100%; border: none; cursor: pointer;">Entrar no Clube</button>
+                
+                <a href="#" class="forgot-password">Esqueceu sua senha?</a>
+            </form>
+
+            <!-- FORMULÁRIO 2: CADASTRO (Fica escondido no início) -->
+            <form id="form-cadastro" class="auth-form d-none">
+                <h3>Prepare a sua caneca e junte-se a nós!</h3>
+
+                <div class="input-group">
+                    <label for="cadastro-nome">Nome de Exibição</label>
+                    <input type="text" id="cadastro-nome" placeholder="Como quer ser chamado(a)?" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="cadastro-email">E-mail</label>
+                    <input type="email" id="cadastro-email" placeholder="seu.email@exemplo.com" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="cadastro-senha">Senha</label>
+                    <input type="password" id="cadastro-senha" placeholder="Crie uma senha forte" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="cadastro-confirmar">Confirmar Senha</label>
+                    <input type="password" id="cadastro-confirmar" placeholder="Digite a senha novamente" required>
+                </div>
+
+                <button type="submit" class="btn-cta" style="width: 100%; border: none; cursor: pointer;">Criar Minha Conta</button>
+            </form>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Clube do Livro. Desenvolvido com ❤️</p>
+    </footer>
+
+    <!-- Linkando o nosso arquivo JavaScript de autenticação -->
+    <script src="../js/auth.js"></script>
+
+</body>
+</html>
