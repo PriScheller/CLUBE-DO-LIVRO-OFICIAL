@@ -1,8 +1,8 @@
-// 1. IMPORTANDO AS FUNÇÕES DO FIREBASE VIA CDN (Links completos para a Web)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// 2. SUAS CREDENCIAIS EXCLUSIVAS (Mantive as suas credenciais certinhas!)
+// SUAS CREDENCIAIS DO FIREBASE (Mantenha as suas chaves aqui se forem diferentes!)
 const firebaseConfig = {
   apiKey: "AIzaSyBLbovIWFNDsktMJTppqhhwCKlBx17VITw",
   authDomain: "clube-do-livro-oficial.firebaseapp.com",
@@ -13,9 +13,12 @@ const firebaseConfig = {
   measurementId: "G-TC0F45KHGZ"
 };
 
-// 3. INICIALIZANDO O APP E O MÓDULO DE AUTENTICAÇÃO
+// Inicializa o Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app); // <-- Aqui nós criamos o 'auth' que estava faltando!
 
-// 4. EXPORTANDO O 'AUTH' PARA O SEU ARQUIVO AUTH.JS
-export { auth };
+// Inicializa os Serviços
+const auth = getAuth(app);
+const db = getFirestore(app); // <-- ESSA LINHA É CRUCIAL!
+
+// EXPORTAÇÃO COMPLETA (Isso resolve o erro do console!)
+export { auth, db };
