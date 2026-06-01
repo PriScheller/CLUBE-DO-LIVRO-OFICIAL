@@ -1,0 +1,230 @@
+/* ==========================================
+   ESTILOS EXCLUSIVOS DA ESTANTE VIRTUAL
+   ========================================== */
+
+/* Ajustes de Layout Principal */
+.estante-main {
+    flex: 1;
+    padding: 2rem 5%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.estante-header h2 {
+    font-size: 2rem;
+    color: var(--marrom-cozy);
+    margin-bottom: 0.5rem;
+}
+
+.estante-header p {
+    color: var(--marrom-suave);
+}
+
+/* Estrutura das Colunas da Estante */
+.estante-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    align-items: start;
+}
+
+.categoria-coluna {
+    background-color: var(--branco-puro);
+    border-radius: 25px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 24px rgba(92, 64, 51, 0.03);
+    border: 1px solid rgba(243, 198, 206, 0.3);
+    min-height: 400px;
+}
+
+.coluna-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--rosa-pastel-claro);
+}
+
+.coluna-topo h3 {
+    color: var(--marrom-cozy);
+    font-size: 1.2rem;
+}
+
+.contador-livros {
+    background-color: var(--rosa-pastel-claro);
+    color: var(--marrom-cozy);
+    padding: 0.2rem 0.8rem;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+/* Lista de Cards de Livros */
+.livros-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* --- DESIGN DO CARD DO LIVRO (Pré-visualização do que o JS vai gerar) --- */
+.livro-card {
+    background: var(--branco-puro);
+    border: 1px solid var(--rosa-pastel-claro);
+    border-radius: 18px;
+    padding: 1rem;
+    display: flex;
+    gap: 1rem;
+    box-shadow: 0 4px 10px rgba(92, 64, 51, 0.01);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.livro-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(92, 64, 51, 0.04);
+}
+
+.livro-capa {
+    width: 65px;
+    height: 95px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid rgba(92, 64, 51, 0.1);
+}
+
+.livro-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.livro-info h4 {
+    color: var(--marrom-cozy);
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+}
+
+/* Barra de Progresso e Porcentagem */
+.progresso-container {
+    margin-top: 0.5rem;
+}
+
+.progresso-texto {
+    font-size: 0.8rem;
+    color: var(--marrom-suave);
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.2rem;
+}
+
+.barra-progresso-bg {
+    background-color: var(--rosa-pastel-claro);
+    height: 6px;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.barra-progresso-fill {
+    background-color: var(--rosa-pastel-medio);
+    height: 100%;
+    width: 0%; /* Alterado dinamicamente por JS */
+    transition: width 0.3s ease;
+}
+
+/* --- ESTILOS DO MODAL DE CADASTRO --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(92, 64, 51, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-card {
+    background-color: var(--branco-puro);
+    width: 90%;
+    max-width: 480px;
+    padding: 2rem;
+    border-radius: 30px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    animation: scaleUp 0.3s ease;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.modal-header h3 {
+    color: var(--marrom-cozy);
+    font-size: 1.3rem;
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: var(--marrom-suave);
+    cursor: pointer;
+}
+
+.form-row-paginas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+/* Configuração do select e textarea para seguirem o padrão cozy */
+select, textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--rosa-pastel-claro);
+    background-color: var(--rosa-pastel-claro);
+    border-radius: 15px;
+    font-size: 1rem;
+    color: var(--marrom-cozy);
+    font-family: inherit;
+}
+
+select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--rosa-pastel-medio);
+    background-color: var(--branco-puro);
+}
+
+/* Botões adicionais */
+.btn-cta-small {
+    padding: 0.6rem 1.2rem;
+    background-color: var(--rosa-pastel-medio);
+    color: var(--marrom-cozy);
+    border: none;
+    border-radius: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-cta-small:hover {
+    background-color: #e8b5bd;
+}
+
+/* Utilitários */
+.d-none {
+    display: none !important;
+}
+
+@keyframes scaleUp {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
