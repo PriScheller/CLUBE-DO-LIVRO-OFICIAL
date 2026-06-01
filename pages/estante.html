@@ -15,7 +15,6 @@
         </div>
         <nav style="display: flex; align-items: center; gap: 1.5rem;">
             <a href="dashboard.html" class="btn-login" style="text-decoration: none;">Voltar ao Painel</a>
-            <button id="btn-novo-livro" class="btn-cta-small">+ Adicionar Livro</button>
         </nav>
     </header>
 
@@ -60,7 +59,7 @@
     <div class="modal-overlay d-none" id="modal-livro">
         <div class="modal-card">
             <div class="modal-header">
-                <h3 id="modal-titulo-acao">Adicionar Novo Livro</h3>
+                <h3 id="modal-titulo-acao">Editar Informações do Livro</h3>
                 <button id="btn-fechar-modal" class="btn-close">&times;</button>
             </div>
             
@@ -69,12 +68,7 @@
 
                 <div class="input-group">
                     <label for="livro-titulo">Título do Livro</label>
-                    <input type="text" id="livro-titulo" placeholder="Ex: O Hobbit" required>
-                </div>
-
-                <div class="input-group">
-                    <label for="livro-isbn">ISBN (Opcional - Ajuda a achar a capa exata)</label>
-                    <input type="text" id="livro-isbn" placeholder="Ex: 9788595084711">
+                    <input type="text" id="livro-titulo" readonly style="background-color: #f5f5f5; cursor: not-allowed;">
                 </div>
 
                 <div class="input-group">
@@ -99,11 +93,15 @@
 
                 <div class="input-group">
                     <label for="livro-comentario">Meus Comentários / Notas</label>
-                    <textarea id="livro-comentario" rows="3" placeholder="O que você está achando ou achou do livro?"></textarea>
+                    <textarea id="livro-comentario" rows="3"></textarea>
                 </div>
 
                 <button type="submit" id="btn-salvar-livro" class="btn-submit-form" style="width: 100%; padding: 0.8rem; background-color: var(--rosa-pastel-medio); color: var(--marrom-cozy); border: none; border-radius: 15px; font-weight: bold; cursor: pointer; margin-top: 1rem;">
-                    Salvar na Estante
+                    Atualizar Progresso
+                </button>
+
+                <button type="button" id="btn-excluir-livro" style="width: 100%; padding: 0.8rem; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 15px; font-weight: bold; cursor: pointer; margin-top: 0.5rem;">
+                    ❌ Excluir Livro da Estante
                 </button>
             </form>
         </div>

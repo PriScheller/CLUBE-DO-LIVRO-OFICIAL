@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clube do Livro - Pesquisar Livros</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/estante.css"> <style>
+        .pesquisa-main { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+        .resultados-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+        .busca-card { display: flex; gap: 1rem; background: #fff; padding: 1rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #eee; }
+        .busca-capa { width: 90px; height: 130px; object-fit: cover; border-radius: 6px; background-color: #fff0f2; }
+        .busca-info { display: flex; flex-direction: column; justify-content: space-between; flex: 1; }
+        .busca-info h4 { margin: 0 0 0.3rem 0; font-size: 1rem; color: #333; }
+        .busca-info p { margin: 0 0 0.2rem 0; font-size: 0.85rem; color: #666; }
+        .select-categoria { width: 100%; padding: 0.4rem; border-radius: 8px; border: 1px solid #ccc; font-size: 0.85rem; margin-bottom: 0.5rem; }
+        .btn-add-pesquisa { width: 100%; padding: 0.5rem; background-color: var(--rosa-pastel-medio); color: var(--marrom-cozy); border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <h1>📖 Meu Clube</h1>
+        </div>
+        <nav>
+            <a href="dashboard.html" class="btn-login" style="text-decoration: none;">Voltar ao Painel</a>
+        </nav>
+    </header>
+
+    <main class="pesquisa-main">
+        <h2>🔍 Buscar Novos Livros</h2>
+        <p>Digite o título ou ISBN para encontrar obras na API global.</p>
+
+        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+            <input type="text" id="input-termo-busca" placeholder="Digite o título ou número do ISBN..." style="flex: 1; padding: 0.8rem; border-radius: 10px; border: 1px solid #ccc;">
+            <button id="btn-executar-busca" style="padding: 0.8rem 1.5rem; background-color: var(--marrom-cozy); color: #fff; border: none; border-radius: 10px; cursor: pointer; font-weight: bold;">Pesquisar</button>
+        </div>
+
+        <div class="resultados-grid" id="container-resultados">
+            <p style="color: #888; grid-column: 1/-1; text-align: center;">Faça uma busca para exibir os resultados...</p>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Clube do Livro. Desenvolvido com ❤️</p>
+    </footer>
+
+    <script type="module" src="../js/pesquisa.js"></script>
+</body>
+</html>
