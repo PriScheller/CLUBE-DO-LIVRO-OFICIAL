@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clube do Livro - Minha Estante</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/estante.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <h1>📖 Meu Clube</h1>
+        </div>
+        <nav style="display: flex; align-items: center; gap: 1.5rem;">
+            <a href="dashboard.html" class="btn-login" style="text-decoration: none;">Voltar ao Painel</a>
+            <button id="btn-novo-livro" class="btn-cta-small">+ Adicionar Livro</button>
+        </nav>
+    </header>
+
+    <main class="estante-main">
+        <header class="estante-header">
+            <h2>📚 Minha Estante Virtual</h2>
+            <p>Organize suas leituras, acompanhe seus progressos e registre suas memórias literárias.</p>
+        </header>
+
+        <div class="estante-container">
+            
+            <section class="categoria-coluna" id="coluna-quero-ler">
+                <div class="coluna-topo">
+                    <h3>📌 Quero Ler</h3>
+                    <span class="contador-livros" id="qtd-quero">0</span>
+                </div>
+                <div class="livros-lista" id="lista-quero-ler">
+                    </div>
+            </section>
+
+            <section class="categoria-coluna" id="coluna-lendo">
+                <div class="coluna-topo">
+                    <h3>☕ Lendo</h3>
+                    <span class="contador-livros" id="qtd-lendo">0</span>
+                </div>
+                <div class="livros-lista" id="lista-lendo">
+                    </div>
+            </section>
+
+            <section class="categoria-coluna" id="coluna-lidos">
+                <div class="coluna-topo">
+                    <h3>✨ Lidos</h3>
+                    <span class="contador-livros" id="qtd-lidos">0</span>
+                </div>
+                <div class="livros-lista" id="lista-lidos">
+                    </div>
+            </section>
+
+        </div>
+    </main>
+
+    <div class="modal-overlay d-none" id="modal-livro">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modal-titulo-acao">Adicionar Novo Livro</h3>
+                <button id="btn-fechar-modal" class="btn-close">&times;</button>
+            </div>
+            
+            <form id="form-livro">
+                <input type="hidden" id="livro-id-edicao" value="">
+
+                <div class="input-group">
+                    <label for="livro-titulo">Título do Livro</label>
+                    <input type="text" id="livro-titulo" placeholder="Ex: O Hobbit" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="livro-isbn">ISBN (Opcional - Ajuda a achar a capa exata)</label>
+                    <input type="text" id="livro-isbn" placeholder="Ex: 9788595084711">
+                </div>
+
+                <div class="input-group">
+                    <label for="livro-status">Status de Leitura</label>
+                    <select id="livro-status">
+                        <option value="quero-ler">Quero Ler</option>
+                        <option value="lendo">Lendo</option>
+                        <option value="lidos">Lidos</option>
+                    </select>
+                </div>
+
+                <div class="form-row-paginas">
+                    <div class="input-group">
+                        <label for="livro-pag-atual">Pág. Atual</label>
+                        <input type="number" id="livro-pag-atual" value="0" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="livro-pag-total">Total Páginas</label>
+                        <input type="number" id="livro-pag-total" value="0" min="0">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="livro-comentario">Meus Comentários / Notas</label>
+                    <textarea id="livro-comentario" rows="3" placeholder="O que você está achando ou achou do livro?"></textarea>
+                </div>
+
+                <button type="submit" id="btn-salvar-livro" class="btn-submit-form" style="width: 100%; padding: 0.8rem; background-color: var(--rosa-pastel-medio); color: var(--marrom-cozy); border: none; border-radius: 15px; font-weight: bold; cursor: pointer; margin-top: 1rem;">
+                    Salvar na Estante
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Clube do Livro. Desenvolvido com ❤️</p>
+    </footer>
+
+    <script type="module" src="../js/estante.js"></script>
+</body>
+</html>
