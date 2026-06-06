@@ -2,7 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebas
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// SUAS CREDENCIAIS DO FIREBASE (Mantenha as suas chaves aqui se forem diferentes!)
+// COLE SUAS CREDENCIAIS REAIS DO FIREBASE AQUI:
 const firebaseConfig = {
   apiKey: "AIzaSyBLbovIWFNDsktMJTppqhhwCKlBx17VITw",
   authDomain: "clube-do-livro-oficial.firebaseapp.com",
@@ -16,9 +16,6 @@ const firebaseConfig = {
 // Inicializa o Firebase
 const app = initializeApp(firebaseConfig);
 
-// Inicializa os Serviços
-const auth = getAuth(app);
-const db = getFirestore(app); // <-- ESSA LINHA É CRUCIAL!
-
-// EXPORTAÇÃO COMPLETA (Isso resolve o erro do console!)
-export { auth, db };
+// Inicializa e EXPORTA os serviços com os nomes exatos esperados pelos outros arquivos
+export const auth = getAuth(app);
+export const db = getFirestore(app);

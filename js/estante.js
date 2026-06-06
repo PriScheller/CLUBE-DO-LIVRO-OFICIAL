@@ -1,185 +1,142 @@
 import { db, auth } from './firebase-config.js';
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { 
-    collection, 
-    updateDoc, 
-    deleteDoc, // importação necessária para exclusão
-    doc, 
-    query, 
-    where, 
-    onSnapshot 
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// --- SELETORES DO DOM ---
-const btnFecharModal = document.getElementById('btn-fechar-modal');
-const modalLivro = document.getElementById('modal-livro');
-const formLivro = document.getElementById('form-livro');
-const idEdicaoInput = document.getElementById('livro-id-edicao');
-const btnExcluirLivro = document.getElementById('btn-excluir-livro'); // Novo seletor
+const gridLivros = document.getElementById('grid-livros-estante');
+const tituloSecaoAtual = document.getElementById('titulo-secao-atual');
+const botoesAba = document.querySelectorAll('.btn-aba');
 
-// Inputs do formulário
-const tituloInput = document.getElementById('livro-titulo');
-const statusInput = document.getElementById('livro-status');
-const pagAtualInput = document.getElementById('livro-pag-atual');
-const pagTotalInput = document.getElementById('livro-pag-total');
-const comentarioInput = document.getElementById('livro-comentario');
+let todosOsLivros = []; // Cache local para alternar abas instantaneamente sem re-consultar o banco
+let statusAtual = "lendo"; // Categoria inicial padrão
 
-// Colunas e Contadores
-const listaQuero = document.getElementById('lista-quero-ler');
-const listaLendo = document.getElementById('lista-lendo');
-const listaLidos = document.getElementById('lista-lidos');
-const qtdQuero = document.getElementById('qtd-quero');
-const qtdLendo = document.getElementById('qtd-lendo');
-const qtdLidos = document.getElementById('qtd-lidos');
+// Mapeamento de títulos para deixar o cabeçalho dinâmico e amigável
+const mapasTitulos = {
+    "lendo": "☕ Lendo Atualmente",
+    "quero-ler": "📌 Próximas Leituras (Quero Ler)",
+    "lidos": "✨ Concluídos (Lidos)"
+};
 
-let usuarioAtual = null;
-let unsubscribeEstante = null; 
-let livrosCarregados = []; 
+// Mapeamento de mensagens amigáveis para prateleiras vazias
+const mensagensVazio = {
+    "lendo": "Nenhum livro sendo lido no momento. Que tal começar um? ☕",
+    "quero-ler": "Sua lista de desejos está vazia. Explore novos títulos! 📌",
+    "lidos": "Nenhum livro finalizado ainda. O conhecimento é uma jornada! ✨"
+};
 
-// --- CONTROLE DE SESSÃO ---
+// 1. MONITOR DE SESSÃO DO USUÁRIO
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        usuarioAtual = user;
-        escutarEstanteFirebase(user.uid);
+        carregarDadosIniciais(user.uid);
     } else {
-        usuarioAtual = null;
-        if (unsubscribeEstante) unsubscribeEstante();
         window.location.href = "login.html";
     }
 });
 
-// --- ESCUTA EM TEMPO REAL ---
-function escutarEstanteFirebase(userId) {
-    const q = query(collection(db, "livros"), where("userId", "==", userId));
-    unsubscribeEstante = onSnapshot(q, (snapshot) => {
-        livrosCarregados = [];
-        snapshot.forEach((docSnap) => {
-            livrosCarregados.push({ id: docSnap.id, ...docSnap.data() });
+// 2. BUSCA TODOS OS LIVROS DO USUÁRIO UMA ÚNICA VEZ
+async function carregarDadosIniciais(userId) {
+    gridLivros.innerHTML = `<p class="msg-vazio">Organizando suas prateleiras... Aguarde.</p>`;
+    try {
+        const q = query(collection(db, "livros"), where("userId", "==", userId));
+        const querySnapshot = await getDocs(q);
+        
+        todosOsLivros = [];
+        querySnapshot.forEach((doc) => {
+            todosOsLivros.push({ idDoc: doc.id, ...doc.data() });
         });
-        renderizarEstante(livrosCarregados);
-    });
+
+        // Renderiza a aba ativa inicial ("lendo")
+        renderizarPrateleira();
+        configurarEventosDoMenu();
+
+    } catch (error) {
+        console.error("Erro ao puxar dados da estante:", error);
+        gridLivros.innerHTML = `<p class="msg-vazio" style="color: red;">Erro ao carregar os livros da sua estante.</p>`;
+    }
 }
 
-function calcularPorcentagem(atual, total) {
-    if (!total || total <= 0) return 0;
-    if (atual >= total) return 100;
-    return Math.round((atual / total) * 100);
-}
+// 3. FILTRA E RENDERIZA OS CARDS NO FORMATO HORIZONTAL COM PROGRESSO VISUAL
+function renderizarPrateleira() {
+    gridLivros.innerHTML = "";
+    tituloSecaoAtual.textContent = mapasTitulos[statusAtual];
 
-// --- RENDERIZAÇÃO DOS CARDS COM AS INFORMAÇÕES AUTOMÁTICAS ---
-function renderizarEstante(livros) {
-    listaQuero.innerHTML = "";
-    listaLendo.innerHTML = "";
-    listaLidos.innerHTML = "";
-    let contQuero = 0, contLendo = 0, contLidos = 0;
+    // Filtra o array global pelo status selecionado no menu lateral
+    const livrosFiltrados = todosOsLivros.filter(l => l.status === statusAtual);
 
-    livros.forEach(livro => {
-        const pct = calcularPorcentagem(livro.pagAtual, livro.pagTotal);
-        const capaCard = livro.capaUrl ? livro.capaUrl : "https://placehold.co/65x95/fff0f2/5c4033?text=📖";
+    if (livrosFiltrados.length === 0) {
+        gridLivros.innerHTML = `<p class="msg-vazio">${mensagensVazio[statusAtual]}</p>`;
+        return;
+    }
 
-        const cardHtml = `
-            <div class="livro-card" data-id="${livro.id}">
-                <img src="${capaCard}" alt="Capa" class="livro-capa" style="object-fit: cover;">
-                <div class="livro-info">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem;">
-                        <div>
-                            <h4 style="margin: 0; font-size: 0.95rem;">${livro.titulo}</h4>
-                            <p style="margin: 2px 0 0 0; font-size: 0.75rem; color:#777;">${livro.autor || ''}</p>
-                        </div>
-                        <button class="btn-editar-livro" data-id="${livro.id}" style="background: none; border: none; cursor: pointer; font-size: 0.85rem;">✏️</button>
+    livrosFiltrados.forEach((livro) => {
+        const cardLivro = document.createElement('div');
+        cardLivro.className = 'livro-card';
+        
+        const capaUrl = livro.capaUrl || "https://placehold.co/90x130/fff0f2/5c4033?text=📖";
+
+        // Bloco customizável para injetar texto simples ou a estrutura da barra de progresso
+        let blocoProgressoHTML = "";
+
+        if (livro.status === 'lendo') {
+            const total = parseInt(livro.pagTotal) || 0;
+            const atual = parseInt(livro.pagAtual) || 0;
+            const porcentagem = (total > 0) ? Math.min(Math.round((atual / total) * 100), 100) : 0;
+
+            // Substituição do texto cru pela estrutura da barra Cozy
+            blocoProgressoHTML = `
+                <div class="progresso-estante-container" style="margin: 0.3rem 0; width: 100%;">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: bold; color: var(--marrom-cozy); margin-bottom: 0.2rem;">
+                        <span>${porcentagem}% lido</span>
+                        <span style="font-weight: normal; color: #888;">${atual}/${total} pág.</span>
                     </div>
-                    
-                    ${livro.status === 'lendo' ? `
-                        <div class="progresso-container">
-                            <div class="progresso-texto">
-                                <span>Pág. ${livro.pagAtual} / ${livro.pagTotal}</span>
-                                <span>${pct}%</span>
-                            </div>
-                            <div class="barra-progresso-bg">
-                                <div class="barra-progresso-fill" style="width: ${pct}%;"></div>
-                            </div>
-                        </div>
-                    ` : ''}
+                    <div style="width: 100%; height: 7px; background: #f3ebeb; border-radius: 4px; overflow: hidden; border: 1px solid #ebdada;">
+                        <div style="width: ${porcentagem}%; height: 100%; background-color: var(--rosa-pastel-medio); transition: width 0.3s ease;"></div>
+                    </div>
+                </div>
+            `;
+        } else if (livro.status === 'lidos') {
+            blocoProgressoHTML = `<span class="livro-progresso" style="color: #28a745; font-weight: bold;">✨ Concluído</span>`;
+        } else {
+            blocoProgressoHTML = `<span class="livro-progresso" style="color: var(--marrom-cozy); font-style: italic;">📌 Planejado</span>`;
+        }
 
-                    ${livro.status === 'lidos' && livro.comentario ? `
-                        <p style="font-size: 0.8rem; color: var(--marrom-suave); font-style: italic; margin-top: 0.5rem;">
-                            "${livro.comentario}"
-                        </p>
-                    ` : ''}
+        // Monta a estrutura horizontal perfeita preservando as classes originais de detalhes
+        cardLivro.innerHTML = `
+            <img src="${capaUrl}" alt="Capa do Livro" class="livro-capa">
+            <div class="livro-detalhes">
+                <div class="livro-info-topo">
+                    <h4 class="livro-titulo" title="${livro.titulo}">${livro.titulo}</h4>
+                    <p class="livro-autor">${livro.autor || 'Autor não cadastrado'}</p>
+                </div>
+                <div class="livro-info-base" style="flex-direction: column; align-items: flex-start; gap: 0.4rem; width: 100%;">
+                    ${blocoProgressoHTML}
+                    <button class="btn-abrir-ficha" data-id="${livro.idDoc}" style="align-self: flex-end; margin-top: 2px;">Ver Ficha</button>
                 </div>
             </div>
         `;
 
-        if (livro.status === 'quero-ler') { listaQuero.innerHTML += cardHtml; contQuero++; }
-        else if (livro.status === 'lendo') { listaLendo.innerHTML += cardHtml; contLendo++; }
-        else if (livro.status === 'lidos') { listaLidos.innerHTML += cardHtml; contLidos++; }
-    });
+        gridLivros.appendChild(cardLivro);
 
-    qtdQuero.textContent = contQuero;
-    qtdLendo.textContent = contLendo;
-    qtdLidos.textContent = contLidos;
-    configurarBotoesEditar();
-}
-
-// --- SALVAR ALTERAÇÃO DE PROGRESSO ---
-if (formLivro) {
-    formLivro.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const idEdicao = idEdicaoInput.value;
-        if (!idEdicao) return;
-
-        const status = statusInput.value;
-        let pagAtual = parseInt(pagAtualInput.value) || 0;
-        let pagTotal = parseInt(pagTotalInput.value) || 0;
-        const comentario = comentarioInput.value;
-
-        if (status === 'lidos' && pagTotal > 0) pagAtual = pagTotal;
-
-        try {
-            const livroRef = doc(db, "livros", idEdicao);
-            await updateDoc(livroRef, { status, pagAtual, pagTotal, comentario });
-            modalLivro.classList.add('d-none');
-        } catch (error) {
-            console.error("Erro ao atualizar:", error);
-        }
-    });
-}
-
-// --- EVENTO DO BOTÃO EXCLUIR ---
-if (btnExcluirLivro) {
-    btnExcluirLivro.addEventListener('click', async () => {
-        const idExclusao = idEdicaoInput.value;
-        if (!idExclusao) return;
-
-        if (confirm("Tem certeza que deseja remover este livro da sua estante?")) {
-            try {
-                await deleteDoc(doc(db, "livros", idExclusao));
-                modalLivro.classList.add('d-none');
-            } catch (error) {
-                console.error("Erro ao deletar documento:", error);
-                alert("Não foi possível excluir o livro.");
-            }
-        }
-    });
-}
-
-function configurarBotoesEditar() {
-    document.querySelectorAll('.btn-editar-livro').forEach(botao => {
-        botao.addEventListener('click', (e) => {
-            const idLivro = e.currentTarget.getAttribute('data-id');
-            const livro = livrosCarregados.find(l => l.id === idLivro);
-
-            if (livro) {
-                idEdicaoInput.value = livro.id;
-                tituloInput.value = livro.titulo;
-                statusInput.value = livro.status;
-                pagAtualInput.value = livro.pagAtual;
-                pagTotalInput.value = livro.pagTotal;
-                comentarioInput.value = livro.comentario || "";
-                modalLivro.classList.remove('d-none');
-            }
+        // Evento do botão para abrir a Ficha de Leitura passando o ID do FireStore por parâmetro
+        cardLivro.querySelector('.btn-abrir-ficha').addEventListener('click', (e) => {
+            const idLivro = e.target.getAttribute('data-id');
+            window.location.href = `ficha.html?id=${idLivro}`;
         });
     });
 }
 
-if (btnFecharModal) btnFecharModal.addEventListener('click', () => modalLivro.classList.add('d-none'));
+// 4. ESCUTA E GERENCIA A MUDANÇA DE ABAS NO MENU LATERAL
+function configurarEventosDoMenu() {
+    botoesAba.forEach(botao => {
+        botao.addEventListener('click', (e) => {
+            // Remove a classe 'ativo' de todos os botões do menu
+            botoesAba.forEach(b => b.classList.remove('ativo'));
+            
+            // Adiciona a classe 'ativo' no botão que foi clicado
+            e.target.classList.add('ativo');
+            
+            // Atualiza o status e renderiza a tela instantaneamente
+            statusAtual = e.target.getAttribute('data-status');
+            renderizarPrateleira();
+        });
+    });
+}
