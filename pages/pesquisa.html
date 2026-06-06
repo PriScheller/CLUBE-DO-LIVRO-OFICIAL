@@ -3,9 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clube do Livro - Pesquisar Livros</title>
+    <title>Meu Clube - Resultados da Busca</title>
     <link rel="stylesheet" href="../css/global.css">
-    <link rel="stylesheet" href="../css/estante.css"> <style>
+    <link rel="stylesheet" href="../css/estante.css">
+    <style>
+        /* Mantendo a identidade visual idêntica à Dashboard */
+        .dash-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background-color: #fff; border-bottom: 1px solid #f0e4e6; }
+        .dash-logo h1 { margin: 0; font-size: 1.4rem; color: var(--marrom-cozy); }
+        .dash-search-container { flex: 1; max-width: 500px; margin: 0 2rem; }
+        .dash-search-form { display: flex; gap: 0.5rem; }
+        .dash-search-input { width: 100%; padding: 0.6rem 1rem; border-radius: 20px; border: 1px solid #ddd; font-size: 0.9rem; }
+        .dash-search-btn { padding: 0.6rem 1.2rem; background-color: var(--rosa-pastel-medio); color: var(--marrom-cozy); border: none; border-radius: 20px; font-weight: bold; cursor: pointer; }
+
         .pesquisa-main { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
         .resultados-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
         .busca-card { display: flex; gap: 1rem; background: #fff; padding: 1rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #eee; }
@@ -15,36 +24,35 @@
         .busca-info p { margin: 0 0 0.2rem 0; font-size: 0.85rem; color: #666; }
         .select-categoria { width: 100%; padding: 0.4rem; border-radius: 8px; border: 1px solid #ccc; font-size: 0.85rem; margin-bottom: 0.5rem; }
         .btn-add-pesquisa { width: 100%; padding: 0.5rem; background-color: var(--rosa-pastel-medio); color: var(--marrom-cozy); border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.85rem; }
+        .btn-voltar { background: none; border: 1px solid var(--marrom-cozy); padding: 0.5rem 1.2rem; border-radius: 15px; color: var(--marrom-cozy); font-weight: bold; text-decoration: none; font-size: 0.9rem; }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">
-            <h1>📖 Meu Clube</h1>
+    <header class="dash-header">
+        <div class="dash-logo">
+            <h1 style="cursor: pointer;" onclick="window.location.href='dashboard.html'">📖 Meu Clube</h1>
         </div>
-        <nav>
-            <a href="dashboard.html" class="btn-login" style="text-decoration: none;">Voltar ao Painel</a>
-        </nav>
+        
+        <div class="dash-search-container">
+            <div class="dash-search-form">
+                <input type="text" id="input-termo-busca" class="dash-search-input" placeholder="Pesquisar outro livro ou ISBN...">
+                <button type="button" id="btn-executar-busca" class="dash-search-btn">Pesquisar</button>
+            </div>
+        </div>
+
+        <div>
+            <a href="dashboard.html" class="btn-voltar">Painel</a>
+        </div>
     </header>
 
     <main class="pesquisa-main">
-        <h2>🔍 Buscar Novos Livros</h2>
-        <p>Digite o título ou ISBN para encontrar obras na API global.</p>
-
-        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-            <input type="text" id="input-termo-busca" placeholder="Digite o título ou número do ISBN..." style="flex: 1; padding: 0.8rem; border-radius: 10px; border: 1px solid #ccc;">
-            <button id="btn-executar-busca" style="padding: 0.8rem 1.5rem; background-color: var(--marrom-cozy); color: #fff; border: none; border-radius: 10px; cursor: pointer; font-weight: bold;">Pesquisar</button>
-        </div>
-
+        <h2 id="titulo-resultados" style="color: var(--marrom-cozy); font-family: serif;">📚 Livros Encontrados</h2>
+        
         <div class="resultados-grid" id="container-resultados">
-            <p style="color: #888; grid-column: 1/-1; text-align: center;">Faça uma busca para exibir os resultados...</p>
+            <p style="color: #888; grid-column: 1/-1; text-align: center;">Carregando resultados da biblioteca global...</p>
         </div>
     </main>
-
-    <footer>
-        <p>&copy; 2026 Clube do Livro. Desenvolvido com ❤️</p>
-    </footer>
 
     <script type="module" src="../js/pesquisa.js"></script>
 </body>
