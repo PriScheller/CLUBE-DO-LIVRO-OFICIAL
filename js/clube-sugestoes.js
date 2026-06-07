@@ -1,71 +1,280 @@
-import { db } from './firebase-config.js';
-import { doc, getDoc, updateDoc, arrayUnion, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { db, auth } from './firebase-config.js';
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { doc, updateDoc, arrayRemove, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-const idClube = new URLSearchParams(window.location.search).get('id');
-const formSugestao = document.getElementById('form-adicionar-livro');
-const listaPrint = document.getElementById('lista-sugestoes-print');
-const imgJarro = document.getElementById('img-jarro');
-const btnSortear = document.getElementById('btn-sortear');
+// --- Configuração de Estado ---
+const idClubeAtual = new URLSearchParams(window.location.search).get('id');
+let usuarioLogadoUid = null;
+let dadosClubeAtual = null;
 
-let sugestoesAtuais = [];
+let anguloAtual = 0;
+let estaGirando = false;
+const coresFatias = ["#8C6239", "#5C3A21", "#A67C52", "#D9B48F", "#4A3525", "#BF9B7A", "#734A26"];
 
-// 1. Monitorar mudanças no Firestore em tempo real
-onSnapshot(doc(db, "clubes", idClube), (doc) => {
-    if (doc.exists()) {
-        sugestoesAtuais = doc.data().sugestoesLivros || [];
-        renderizarLista();
+// --- Elementos do DOM ---
+const DOM = {
+    btnVoltar: document.getElementById('btn-voltar'),
+    listaSugestoes: document.getElementById('lista-sugestoes-print'),
+    canvasRoleta: document.getElementById('canvas-roleta'),
+    btnSortear: document.getElementById('btn-sortear'),
+    boxResultado: document.getElementById('resultado-sorteio-box'),
+    txtSorteado: document.getElementById('txt-livro-sorteado'),
+    btnDefinirLeitura: document.getElementById('btn-definir-leitura'),
+};
+
+// --- Autenticação ---
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        usuarioLogadoUid = user.uid;
+        if (idClubeAtual) {
+            escutarDadosClube();
+        } else {
+            alert("Clube não identificado. Retornando.");
+            window.location.href = "clubes.html";
+        }
+    } else {
+        window.location.href = "../login.html";
     }
 });
 
-// 2. Adicionar Sugestão
-formSugestao.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const titulo = document.getElementById('input-titulo-sugestao').value;
-    
-    await updateDoc(doc(db, "clubes", idClube), {
-        sugestoesLivros: arrayUnion({ titulo: titulo })
-    });
-    document.getElementById('input-titulo-sugestao').value = "";
-});
+// --- Conexão Firebase Realtime ---
+function escutarDadosClube() {
+    const clubeRef = doc(db, "clubes", idClubeAtual);
 
-// 3. Renderizar Lista
-function renderizarLista() {
-    listaPrint.innerHTML = sugestoesAtuais.map(s => `
-        <div class="sugestao-item">
-            <span>${s.titulo}</span>
-        </div>
-    `).join('');
+    onSnapshot(clubeRef, (docSnap) => {
+        if (docSnap.exists()) {
+            dadosClubeAtual = docSnap.data();
+            const listaLivros = dadosClubeAtual.sugestoesLivros || [];
+
+            renderizarListaSugestoes(listaLivros);
+            desenharRoleta(listaLivros);
+            gerenciarPermissoesAdmin();
+        } else {
+            alert("Este clube não existe mais.");
+            window.location.href = "clubes.html";
+        }
+    }, (error) => {
+        console.error("Erro ao escutar modificações:", error);
+    });
 }
 
-// 4. Lógica do Sorteio
-btnSortear.addEventListener('click', async () => {
-    if (sugestoesAtuais.length === 0) return alert("Adicione livros ao jarro primeiro!");
+// --- Renderizar Lista com Capa, Numeração e Trava de Segurança ---
+function renderizarListaSugestoes(lista) {
+    if (!DOM.listaSugestoes) return;
 
-    imgJarro.classList.add('shake');
-    
-    setTimeout(async () => {
-        imgJarro.classList.remove('shake');
-        
-        // Sorteia o livro
-        const indiceSorteado = Math.floor(Math.random() * sugestoesAtuais.length);
-        const sorteado = sugestoesAtuais[indiceSorteado];
-        
+    if (lista.length === 0) {
+        DOM.listaSugestoes.innerHTML = `<p class="msg-vazia"><i class="fa-solid fa-box-open"></i> Nenhum livro sugerido ainda.</p>`;
+        return;
+    }
+
+    // Identifica se o usuário logado é o administrador do clube
+    const ehAdminDoClube = dadosClubeAtual && usuarioLogadoUid === dadosClubeAtual.adminUid;
+
+    DOM.listaSugestoes.innerHTML = "";
+    lista.forEach((livro, index) => {
+        const numeroPosicao = index + 1;
+        const capaCard = livro.capaUrl ? livro.capaUrl : 'https://placehold.co/45x65/fff0f2/5c4033?text=📖';
+        const autorCard = livro.autor ? livro.autor : 'Autor Desconhecido';
+
+        // Validação Condicional: Permite excluir se for o dono da sugestão OU se for o admin do clube
+        const ehDonoDaSugestao = usuarioLogadoUid === livro.adicionadoPorUid;
+        const temPermissaoExcluir = ehDonoDaSugestao || ehAdminDoClube;
+
+        const botaoDeletarHTML = temPermissaoExcluir 
+            ? `<button class="btn-deletar-sugestao" data-index="${index}" title="${ehAdminDoClube && !ehDonoDaSugestao ? 'Remover como Administrador' : 'Remover minha sugestão'}">
+                    <i class="fa-solid fa-trash-can"></i>
+               </button>` 
+            : `<span class="tag-sugerido">Membro</span>`;
+
+        const item = document.createElement('div');
+        item.className = "sugestao-item-card";
+        item.innerHTML = `
+            <div class="sugestao-esquerda">
+                <span class="badge-posicao">${numeroPosicao}</span>
+                <img src="${capaCard}" alt="Capa" class="capa-sugestao-mini">
+                <div class="sugestao-detalhes">
+                    <p class="sugestao-titulo"><strong>${livro.titulo}</strong></p>
+                    <p class="sugestao-autor">${autorCard}</p>
+                </div>
+            </div>
+            <div class="sugestao-direita">
+                ${botaoDeletarHTML}
+            </div>
+        `;
+        DOM.listaSugestoes.appendChild(item);
+    });
+}
+
+// --- Desenhar a Roleta Gráfica no Canvas ---
+function desenharRoleta(lista) {
+    if (!DOM.canvasRoleta) return;
+    const ctx = DOM.canvasRoleta.getContext('2d');
+    const qtdFatias = lista.length;
+    const centroX = DOM.canvasRoleta.width / 2;
+    const centroY = DOM.canvasRoleta.height / 2;
+    const raio = centroX - 10;
+
+    ctx.clearRect(0, 0, DOM.canvasRoleta.width, DOM.canvasRoleta.height);
+
+    if (qtdFatias === 0) {
+        ctx.beginPath();
+        ctx.arc(centroX, centroY, raio, 0, 2 * Math.PI);
+        ctx.fillStyle = "#E6D7C3";
+        ctx.fill();
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = "#8C6239";
+        ctx.stroke();
+        ctx.fillStyle = "#8C6239";
+        ctx.font = "bold 16px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("Adicione livros para ver a roleta", centroX, centroY);
+        return;
+    }
+
+    const arcoTamanho = (2 * Math.PI) / qtdFatias;
+
+    for (let i = 0; i < qtdFatias; i++) {
+        const anguloInicio = anguloAtual + (i * arcoTamanho);
+        const anguloFim = anguloInicio + arcoTamanho;
+
+        ctx.beginPath();
+        ctx.moveTo(centroX, centroY);
+        ctx.arc(centroX, centroY, raio, anguloInicio, anguloFim);
+        ctx.fillStyle = coresFatias[i % coresFatias.length];
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "#FFF";
+        ctx.stroke();
+
+        ctx.save();
+        ctx.translate(centroX, centroY);
+        ctx.rotate(anguloInicio + arcoTamanho / 2);
+        ctx.textAlign = "right";
+        ctx.fillStyle = "#FFF";
+        ctx.font = "bold 13px sans-serif";
+
+        let textoLivro = lista[i].titulo || "Livro";
+        if (textoLivro.length > 22) textoLivro = textoLivro.substring(0, 20) + "...";
+
+        ctx.fillText(textoLivro, raio - 15, 5);
+        ctx.restore();
+    }
+
+    ctx.beginPath();
+    ctx.arc(centroX, centroY, 20, 0, 2 * Math.PI);
+    ctx.fillStyle = "#FFF";
+    ctx.fill();
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = "#8C6239";
+    ctx.stroke();
+}
+
+// --- Mecanismo de Física de Giro ---
+function girarRoleta() {
+    const lista = dadosClubeAtual?.sugestoesLivros || [];
+    if (lista.length === 0 || estaGirando) return;
+
+    estaGirando = true;
+    if (DOM.boxResultado) DOM.boxResultado.classList.add('hidden');
+
+    let velocidadeGiro = Math.random() * 0.3 + 0.4;
+    const desaceleracao = 0.985;
+
+    function animar() {
+        velocidadeGiro *= desaceleracao;
+        anguloAtual += velocidadeGiro;
+        desenharRoleta(lista);
+
+        if (velocidadeGiro > 0.002) {
+            requestAnimationFrame(animar);
+        } else {
+            estaGirando = false;
+            computarResultadoSorteio(lista);
+        }
+    }
+    animar();
+}
+
+function computarResultadoSorteio(lista) {
+    const qtdFatias = lista.length;
+    const arcoTamanho = (2 * Math.PI) / qtdFatias;
+    const anguloNormalizado = anguloAtual % (2 * Math.PI);
+
+    let indiceSorteado = Math.floor((1.5 * Math.PI - anguloNormalizado) / arcoTamanho);
+    if (indiceSorteado < 0) {
+        indiceSorteado = Math.floor((1.5 * Math.PI - anguloNormalizado + 2 * Math.PI) / arcoTamanho);
+    }
+    indiceSorteado = (indiceSorteado % qtdFatias + qtdFatias) % qtdFatias;
+
+    const livroSorteado = lista[indiceSorteado];
+
+    if (DOM.txtSorteado && DOM.boxResultado) {
+        DOM.txtSorteado.textContent = livroSorteado.titulo;
+        DOM.txtSorteado.dataset.objetoCompleto = JSON.stringify(livroSorteado);
+        DOM.boxResultado.classList.remove('hidden');
+    }
+}
+
+// --- Gerenciar Visibilidade de Admin ---
+function gerenciarPermissoesAdmin() {
+    if (!dadosClubeAtual) return;
+    const ehAdmin = usuarioLogadoUid === dadosClubeAtual.adminUid;
+    if (ehAdmin) {
+        DOM.btnDefinirLeitura?.classList.remove('hidden');
+    } else {
+        DOM.btnDefinirLeitura?.classList.add('hidden');
+    }
+}
+
+if (DOM.btnSortear) DOM.btnSortear.addEventListener('click', girarRoleta);
+
+// --- Remoção Segura por Índice ---
+if (DOM.listaSugestoes) {
+    DOM.listaSugestoes.addEventListener('click', async (e) => {
+        const botaoRemover = e.target.closest('.btn-deletar-sugestao');
+        if (!botaoRemover) return;
+
+        const indexAlvo = parseInt(botaoRemover.dataset.index);
+        const livroAlvo = dadosClubeAtual.sugestoesLivros[indexAlvo];
+
+        if (!livroAlvo) return;
+
+        if (confirm(`Deseja retirar "${livroAlvo.titulo}" da lista de sugestões?`)) {
+            try {
+                const clubeRef = doc(db, "clubes", idClubeAtual);
+                await updateDoc(clubeRef, {
+                    sugestoesLivros: arrayRemove(livroAlvo)
+                });
+            } catch (error) {
+                console.error("Erro ao deletar livro:", error);
+            }
+        }
+    });
+}
+
+// --- Persistir Livro Selecionado como Leitura Corrente ---
+if (DOM.btnDefinirLeitura) {
+    DOM.btnDefinirLeitura.addEventListener('click', async () => {
+        const tituloDefinido = DOM.txtSorteado?.textContent;
+        if (!tituloDefinido || tituloDefinido === "Nome do Livro") return;
+
         try {
-            // Atualiza o documento do clube com o livro sorteado
-            const clubeRef = doc(db, "clubes", idClube);
+            const clubeRef = doc(db, "clubes", idClubeAtual);
+            const livroObjetoCompleto = JSON.parse(DOM.txtSorteado.dataset.objetoCompleto);
+
             await updateDoc(clubeRef, {
-                livroAtual: {
-                    titulo: sorteado.titulo,
-                    autor: "Autor a definir", // Pode adicionar um campo no input se quiser
-                    capaUrl: "https://placehold.co/120x180/fff0f2/5c4033?text=📖" // Padrão
-                }
+                "livroAtual.titulo": livroObjetoCompleto.titulo,
+                "livroAtual.autor": livroObjetoCompleto.autor || "Não Informado",
+                "livroAtual.capaUrl": livroObjetoCompleto.capaUrl || "",
+                sugestoesLivros: arrayRemove(livroObjetoCompleto)
             });
 
-            alert(`🎉 Parabéns! O livro sorteado foi: "${sorteado.titulo}". Ele já foi definido como a leitura atual do clube!`);
-            
+            alert(`"${tituloDefinido}" agora é a leitura oficial do clube!`);
+            window.location.href = `clube-interno.html?id=${idClubeAtual}`;
+
         } catch (error) {
-            console.error("Erro ao definir livro atual:", error);
-            alert("Ocorreu um erro ao definir o livro atual.");
+            console.error("Erro ao atualizar leitura oficial:", error);
+            alert("Erro ao tentar salvar a leitura.");
         }
-    }, 2000);
-});
+    });
+}

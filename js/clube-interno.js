@@ -108,10 +108,15 @@ async function renderizarPainel() {
 
 // --- Controle de Permissões e Solicitações ---
 function gerenciarPermissoes() {
-    const ehAdmin = usuarioLogadoUid === dadosClubeAtual.adminUid;
-
-    if (DOM.areaAdminAdicionar) DOM.areaAdminAdicionar.style.display = ehAdmin ? "block" : "none";
-    if (DOM.areaAdminSolicitacoes) DOM.areaAdminSolicitacoes.style.display = ehAdmin ? "block" : "none";
+    // O "?" garante que se dadosClubeAtual for nulo, o código não quebra a tela
+    const ehAdmin = usuarioLogadoUid === dadosClubeAtual?.adminUid;
+    
+    if (DOM.areaAdminAdicionar) {
+        DOM.areaAdminAdicionar.style.display = ehAdmin ? "block" : "none";
+    }
+    if (DOM.areaAdminSolicitacoes) {
+        DOM.areaAdminSolicitacoes.style.display = ehAdmin ? "block" : "none";
+    }
 
     if (ehAdmin) {
         carregarSolicitacoesPendentes();
