@@ -3,29 +3,24 @@ import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/fi
 import { collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // ==========================================================================
-// ELEMENTOS DO DOM
+// ELEMENTOS DO DOM (TODOS INCLUÍDOS)
 // ==========================================================================
 const modalCriar = document.getElementById('modal-criar-clube');
-const modalEntrar = document.getElementById('modal-entrar-clube');
 const btnAbrirCriar = document.getElementById('btn-abrir-criar');
-const btnAbrirEntrar = document.getElementById('btn-abrir-entrar');
 const btnFecharCriar = document.getElementById('btn-fechar-criar');
-const btnFecharEntrar = document.getElementById('btn-fechar-entrar');
-
 const formCriarClube = document.querySelector('#modal-criar-clube .modal-form');
+
 const selectGenero = document.getElementById('genero-clube');
 const grupoGeneroOutro = document.getElementById('grupo-genero-outro');
 const inputGeneroOutro = document.getElementById('genero-clube-outro');
-// NOVO: Seleção de privacidade
 const selectPrivacidade = document.getElementById('clube-privacidade');
 
-const formEntrarClube = document.querySelector('#modal-entrar-clube .modal-form');
 const gridClubes = document.getElementById('grid-clubes-leitura');
 
 let usuarioLogadoUid = null;
 
 // ==========================================================================
-// MONITOR DE AUTENTICAÇÃO
+// MONITOR DE AUTENTICAÇÃO E LÓGICA DE GÊNERO
 // ==========================================================================
 onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -36,14 +31,11 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-// ==========================================================================
-// CONTROLE EXIBIÇÃO DO CAMPO "OUTRO GÊNERO"
-// ==========================================================================
+// Lógica para mostrar/esconder o campo "Outro"
 selectGenero?.addEventListener('change', (e) => {
     if (e.target.value === 'Outro') {
-        grupoGeneroOutro.style.display = 'flex';
+        grupoGeneroOutro.style.display = 'block';
         inputGeneroOutro.required = true;
-        inputGeneroOutro.focus();
     } else {
         grupoGeneroOutro.style.display = 'none';
         inputGeneroOutro.required = false;
@@ -52,31 +44,11 @@ selectGenero?.addEventListener('change', (e) => {
 });
 
 // ==========================================================================
-// GERENCIAMENTO DOS MODAIS (ABRIR / FECHAR)
+// FUNÇÕES AUXILIARES
 // ==========================================================================
 function alternarModal(modal, abrir) {
-    if (abrir) {
-        modal.classList.add('ativo');
-    } else {
-        modal.classList.remove('ativo');
-    }
-}
-
-btnAbrirCriar?.addEventListener('click', () => alternarModal(modalCriar, true));
-btnAbrirEntrar?.addEventListener('click', () => alternarModal(modalEntrar, true));
-btnFecharCriar?.addEventListener('click', () => { alternarModal(modalCriar, false); limparFormularioCriar(); });
-btnFecharEntrar?.addEventListener('click', () => alternarModal(modalEntrar, false));
-
-window.addEventListener('click', (e) => {
-    if (e.target === modalCriar) { alternarModal(modalCriar, false); limparFormularioCriar(); }
-    if (e.target === modalEntrar) { alternarModal(modalEntrar, false); }
-});
-
-function limparFormularioCriar() {
-    if (formCriarClube) formCriarClube.reset();
-    grupoGeneroOutro.style.display = 'none';
-    inputGeneroOutro.required = false;
-    inputGeneroOutro.value = '';
+    if (abrir) modal.classList.add('ativo');
+    else modal.classList.remove('ativo');
 }
 
 function gerarCodigoConvite() {
@@ -89,8 +61,57 @@ function gerarCodigoConvite() {
 }
 
 // ==========================================================================
-// ETAPA ATUAL: AÇÃO DE CRIAR O CLUBE (SUBMIT DO FORMULÁRIO)
+// RENDERIZAÇÃO DINÂMICA
 // ==========================================================================
+async function carregarClubesDoUsuario() {
+    if (!gridClubes || !usuarioLogadoUid) return;
+    gridClubes.innerHTML = `<p style="text-align: center; color: #888;">Carregando seus clubes... ☕</p>`;
+
+    try {
+        const q = query(collection(db, "clubes"), where("membrosLista", "array-contains", usuarioLogadoUid));
+        const querySnapshot = await getDocs(q);
+
+        gridClubes.innerHTML = "";
+        if (querySnapshot.empty) {
+            gridClubes.innerHTML = `<p style="text-align: center; color: #5c4033;">Você ainda não participa de nenhum clube.</p>`;
+            return;
+        }
+
+        querySnapshot.forEach((doc) => {
+            const clube = doc.data();
+            const idClube = doc.id;
+
+            const card = document.createElement('div');
+            card.className = 'clube-card';
+            card.innerHTML = `
+                <div class="clube-card-header">
+                    <span class="clube-tag">📖 ${clube.genero || 'Geral'}</span>
+                    <span class="clube-membros-count"><i class="fa-solid fa-user-group"></i> ${clube.membrosLista?.length || 0}</span>
+                </div>
+                <div class="clube-card-body">
+                    <h4>${clube.nome}</h4>
+                    <p class="clube-descricao">${clube.descricao}</p>
+                    <button class="btn-entrar-clube" data-id="${idClube}">Acessar Painel</button>
+                </div>
+            `;
+
+            card.querySelector('.btn-entrar-clube').addEventListener('click', () => {
+                window.location.href = `clube-interno.html?id=${idClube}`;
+            });
+
+            gridClubes.appendChild(card);
+        });
+    } catch (error) {
+        console.error("Erro ao carregar clubes:", error);
+    }
+}
+
+// ==========================================================================
+// CRIAÇÃO DE CLUBE
+// ==========================================================================
+btnAbrirCriar?.addEventListener('click', () => alternarModal(modalCriar, true));
+btnFecharCriar?.addEventListener('click', () => alternarModal(modalCriar, false));
+
 if (formCriarClube) {
     formCriarClube.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -98,55 +119,68 @@ if (formCriarClube) {
         const nome = document.getElementById('nome-clube').value.trim();
         const descricao = document.getElementById('desc-clube').value.trim();
         const selecaoGenero = selectGenero.value;
-        const privacidade = selectPrivacidade.value; // Captura a escolha (público/privado)
-        
-        let generoFinal = selecaoGenero === 'Outro' ? inputGeneroOutro.value.trim() : selecaoGenero;
+        const privacidade = selectPrivacidade.value;
 
-        if (!nome || !generoFinal) {
-            alert("Por favor, preencha todos os campos obrigatórios.");
-            return;
-        }
+        // Regra do Gênero: Se "Outro", pega do input text, senão pega do select
+        const generoFinal = selecaoGenero === 'Outro' ? inputGeneroOutro.value.trim() : selecaoGenero;
 
-        const codigoGerado = gerarCodigoConvite();
-        const btnSubmit = formCriarClube.querySelector('.btn-submit-form');
-
-        // 3. Objeto com os novos campos de privacidade e fila de espera
         const novoClubeDados = {
             nome: nome,
-            descricao: descricao || "Sem descrição disponível por enquanto. ☕",
+            descricao: descricao || "Sem descrição.",
             genero: generoFinal,
-            codigoConvite: codigoGerado,
+            codigoConvite: gerarCodigoConvite(),
             adminUid: usuarioLogadoUid,
             membrosLista: [usuarioLogadoUid],
-            privacidade: privacidade, // 'publico' ou 'privado'
-            solicitacoesPendentes: [], // Fila inicial vazia
+            privacidade: privacidade,
+            solicitacoesPendentes: [],
             dataCriacao: new Date().toLocaleDateString('pt-BR'),
-            livroAtual: {
-                titulo: "Nenhum livro em leitura",
-                capaUrl: "https://placehold.co/40x60/fff0f2/5c4033?text=📖"
-            }
+            livroAtual: { titulo: "Nenhum livro em leitura", capaUrl: "https://placehold.co/40x60/fff0f2/5c4033?text=📖" }
         };
 
         try {
-            btnSubmit.disabled = true;
-            btnSubmit.innerHTML = 'Criando Clube... <i class="fa-solid fa-spinner fa-spin"></i>';
-
             await addDoc(collection(db, "clubes"), novoClubeDados);
-
-            alert(`🎉 Clube "${nome}" criado com sucesso!\n\nPrivacidade: ${privacidade === 'privado' ? '🔒 Privado' : '🌐 Público'}\nCódigo: ${codigoGerado}`);
-            
-            limparFormularioCriar();
+            alert("Clube criado com sucesso!");
+            formCriarClube.reset();
+            grupoGeneroOutro.style.display = 'none'; // Esconde campo extra
             alternarModal(modalCriar, false);
             carregarClubesDoUsuario();
-
         } catch (error) {
-            console.error("Erro ao salvar clube:", error);
-            alert("Oops! Erro ao tentar criar seu clube.");
-        } finally {
-            btnSubmit.disabled = false;
-            btnSubmit.innerHTML = 'Criar e Gerar Código ✨';
+            console.error("Erro ao salvar:", error);
+            alert("Erro ao criar clube.");
         }
     });
 }
 
-// ... (Restante do seu código de carregamento e entrar em clube permanece inalterado)
+// ==========================================================================
+// SISTEMA DE PESQUISA (FILTRO EM TEMPO REAL)
+// ==========================================================================
+const inputBusca = document.getElementById('input-busca-clube');
+const msgSemResultados = document.getElementById('msg-sem-resultados');
+
+if (inputBusca) {
+    // Escuta tanto a digitação quanto qualquer tentativa de "Enter"
+    inputBusca.addEventListener('input', (e) => {
+        const termoBusca = e.target.value.toLowerCase().trim();
+        const cards = document.querySelectorAll('.clube-card');
+        let contadorVisiveis = 0;
+
+        cards.forEach(card => {
+            const nomeClube = card.querySelector('h4').textContent.toLowerCase();
+            // Verificação de segurança caso o gênero não esteja presente
+            const tagGenero = card.querySelector('.clube-tag');
+            const generoClube = tagGenero ? tagGenero.textContent.toLowerCase() : "";
+
+            if (nomeClube.includes(termoBusca) || generoClube.includes(termoBusca)) {
+                card.style.display = "block";
+                contadorVisiveis++;
+            } else {
+                card.style.display = "none";
+            }
+        });
+
+        // Feedback visual
+        if (msgSemResultados) {
+            msgSemResultados.style.display = (contadorVisiveis === 0 && cards.length > 0) ? "block" : "none";
+        }
+    });
+}
