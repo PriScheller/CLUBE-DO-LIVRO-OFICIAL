@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Clube - Painel do Clube</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/clubes.css">
+    <link rel="stylesheet" href="../css/clube-interno.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="clubes-header">
+        <div class="clubes-logo" onclick="window.location.href='clubes.html'" style="cursor: pointer;">
+            <h1>📖 Voltar para Clubes</h1>
+        </div>
+    </header>
+
+    <main class="painel-clube-container">
+        <section class="clube-info-header">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <h2 id="detalhe-nome-clube">Carregando clube...</h2>
+                    <p id="detalhe-desc-clube">Buscando informações no diário...</p>
+                </div>
+                <span id="badge-privacidade" class="badge-status">---</span>
+            </div>
+            <div class="codigo-compartilhamento">
+                <span>Código de Convite:</span> <strong id="detalhe-codigo">------</strong>
+            </div>
+        </section>
+
+        <div class="painel-grid">
+            
+            <section class="card-livro-ativo">
+                <h3><i class="fa-solid fa-book-open"></i> Livro em Pauta</h3>
+                <div class="livro-flex">
+                    <img id="livro-capa" src="https://placehold.co/120x180/fff0f2/5c4033?text=📖" alt="Capa do Livro">
+                    <div class="livro-status-dados">
+                        <h4 id="livro-titulo">Nenhum livro selecionado</h4>
+                        <p id="livro-autor">Autor não registrado</p>
+                        <button id="btn-mudar-livro" class="btn-admin" style="display: none;">
+                            <i class="fa-solid fa-pen"></i> Alterar Livro
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card-membros-lista">
+                <h3><i class="fa-solid fa-user-group"></i> Leitores no Clube (<span id="contador-membros">0</span>)</h3>
+                
+                <div id="area-admin-adicionar" class="box-sub-recurso" style="display: none;">
+                    <h5>Convidar por Nome de Usuário</h5>
+                    <form id="form-adicionar-membro" class="mini-form-inline">
+                        <input type="text" id="input-username-membro" placeholder="Ex: @prischeller" required>
+                        <button type="submit" class="btn-mini-acao"><i class="fa-solid fa-plus"></i> Add</button>
+                    </form>
+                </div>
+
+                <div id="area-admin-solicitacoes" class="box-sub-recurso" style="display: none;">
+                    <h5><i class="fa-solid fa-clock-rotate-left"></i> Aguardando Aprovação</h5>
+                    <div id="lista-solicitacoes-print">
+                        </div>
+                </div>
+
+                <h5>Membros Ativos</h5>
+                <div id="lista-usuarios-print">
+                    </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script type="module" src="../js/clube-interno.js"></script>
+</body>
+</html>
