@@ -86,7 +86,7 @@ main {
     width: 100%;
     padding: 0.9rem;
     background-color: var(--rosa-pastel-medio);
-    color: var(--marrom-cozy);
+    color: var(--marrom);
     border: none;
     border-radius: 20px;
     font-size: 1.1rem;
@@ -117,6 +117,24 @@ main {
 /* Classe utilitária para esconder formulários */
 .d-none {
     display: none !important;
+}
+
+#form-cadastro button[type="submit"] {
+    width: 100%;
+    padding: 0.8rem;
+    margin-top: 1.5rem;
+    background-color: var(--rosa-pastel-medio); /* Ajuste para a sua cor padrão */
+    color: var(--marrom);
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-size: 1rem;
+}
+
+#form-cadastro button[type="submit"]:hover {
+    background-color: #e8b5bd; /* Um tom um pouco mais escuro para o hover */
 }
 
 /* ==========================================
