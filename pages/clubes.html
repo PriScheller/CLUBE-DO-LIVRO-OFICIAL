@@ -13,14 +13,18 @@
 <body>
 
     <header class="clubes-header">
-        <!-- O título (circulado em amarelo) agora funciona como o botão para voltar ao Dashboard -->
         <div class="clubes-logo" onclick="window.location.href='dashboard.html'" style="cursor: pointer;">
             <h1>📖 Meu Clube</h1>
         </div>
-        <nav class="clubes-nav-links">
-            <!-- O botão individual do Dashboard (circulado em verde) foi removido daqui -->
-            <a href="clubes.html" class="nav-link-item ativa"><i class="fa-solid fa-users"></i> Clubes</a>
-        </nav>
+
+        <div class="dash-search-container">
+            <form action="clubes.html" method="GET" class="dash-search-form">
+                <input type="text" name="pesquisa" class="dash-search-input"
+                    placeholder="Pesquisar clubes por nome ou gênero..." required>
+                <button type="submit" class="dash-search-btn">Buscar</button>
+            </form>
+        </div>
+        
     </header>
 
     <main class="clubes-container">
@@ -38,16 +42,14 @@
         </section>
 
         <h3 class="secao-titulo">Clubes que você participa</h3>
+
         <div class="grid-clubes" id="grid-clubes-leitura">
-            <!-- Os cards serão injetados dinamicamente via JavaScript -->
         </div>
+        <p id="msg-sem-resultados" style="display: none; text-align: center; color: #777; margin-top: 2rem;">
+            Nenhum clube encontrado com esses termos. 🔍
+        </p>
     </main>
 
-    <!-- ==========================================================================
-       MODAIS SUSPENSOS
-       ========================================================================== -->
-
-    <!-- Modal: Criar Clube -->
     <div class="modal-overlay" id="modal-criar-clube">
         <div class="modal-content">
             <div class="modal-header">
@@ -61,38 +63,26 @@
                 </div>
                 <div class="form-group">
                     <label for="desc-clube">Descrição ou Proposta:</label>
-                    <textarea id="desc-clube" placeholder="Sobre o que é o clube? Quais os gêneros preferidos?"
-                        rows="3"></textarea>
+                    <textarea id="desc-clube" placeholder="Sobre o que é o clube?" rows="3"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="genero-clube">Gênero Principal:</label>
                     <select id="genero-clube" required>
-                        <option value="Geral">Geral / Variados</option>
+                        <option value="Geral">Geral</option>
                         <option value="Mistério">Mistério</option>
-                        <option value="True Crime">True Crime</option>
-                        <option value="Fantasia">Fantasia</option>
-                        <option value="Ficção Científica">Ficção Científica</option>
                         <option value="Romance">Romance</option>
-                        <option value="Terror">Terror</option>
-                        <option value="Sobrenatural">Sobrenatural</option>
                         <option value="Outro">Outro (Digitar)...</option>
                     </select>
                 </div>
-                <!-- Campo dinâmico para gênero customizado (escondido por padrão) -->
                 <div class="form-group" id="grupo-genero-outro" style="display: none;">
                     <label for="genero-clube-outro">Digite o Gênero Customizado:</label>
-                    <input type="text" id="genero-clube-outro"
-                        placeholder="Ex: Suspense Psicológico, Suspense Gótico...">
+                    <input type="text" id="genero-clube-outro" placeholder="Ex: Dark Romance">
                 </div>
-                <div class="input-group" style="margin-bottom: 1.2rem;">
-                    <label for="clube-privacidade"
-                        style="display: block; margin-bottom: 0.5rem; color: #5c4033; font-weight: bold;">Tipo de
-                        Privacidade:</label>
-                    <select id="clube-privacidade"
-                        style="width: 100%; padding: 0.7rem; border-radius: 8px; border: 1px solid #f5e6e8; background-color: #fff0f2; color: #333;"
-                        required>
-                        <option value="publico">🌐 Público (Qualquer um pode entrar pelo painel)</option>
-                        <option value="privado">🔒 Privado (Requer aprovação do Administrador)</option>
+                <div class="form-group">
+                    <label for="clube-privacidade">Tipo de Privacidade:</label>
+                    <select id="clube-privacidade" required>
+                        <option value="publico">🌐 Público</option>
+                        <option value="privado">🔒 Privado</option>
                     </select>
                 </div>
                 <button type="submit" class="btn-submit-form">Criar e Gerar Código ✨</button>
@@ -100,7 +90,6 @@
         </div>
     </div>
 
-    <!-- Modal: Entrar com Código -->
     <div class="modal-overlay" id="modal-entrar-clube">
         <div class="modal-content">
             <div class="modal-header">
@@ -110,11 +99,7 @@
             <form class="modal-form">
                 <div class="form-group">
                     <label for="codigo-clube">Código de Convite:</label>
-                    <input type="text" id="codigo-clube"
-                        style="text-transform: uppercase; text-align: center; font-weight: bold; letter-spacing: 2px;"
-                        placeholder="EX: CX78W9" required>
-                    <small style="color: #888; font-size: 0.8rem; margin-top: 0.3rem; display: block;">Peça o código de
-                        6 dígitos ao administrador do clube.</small>
+                    <input type="text" id="codigo-clube" placeholder="EX: CX78W9" required>
                 </div>
                 <button type="submit" class="btn-submit-form">Validar Código e Entrar 🎯</button>
             </form>
