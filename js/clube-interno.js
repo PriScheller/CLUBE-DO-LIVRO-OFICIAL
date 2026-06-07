@@ -1,287 +1,268 @@
 import { db, auth } from './firebase-config.js';
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { doc, getDoc, updateDoc, arrayUnion, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { doc, getDoc, updateDoc, arrayUnion, arrayRemove, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// ==========================================================================
-// CAPTURA DE PARÂMETROS DA URL
-// ==========================================================================
-const obterIdUrl = () => {
-    const parametros = new URLSearchParams(window.location.search);
-    return parametros.get('id');
-};
-const idClubeAtual = obterIdUrl();
-
-// ==========================================================================
-// ELEMENTOS DO DOM
-// ==========================================================================
-const txtNomeClube = document.getElementById('detalhe-nome-clube');
-const txtDescClube = document.getElementById('detalhe-desc-clube');
-const txtCodigoClube = document.getElementById('detalhe-codigo');
-const txtContadorMembros = document.getElementById('contador-membros');
-const badgePrivacidade = document.getElementById('badge-privacidade');
-
-const imgLivroCapa = document.getElementById('livro-capa');
-const txtLivroTitulo = document.getElementById('livro-titulo');
-const txtLivroAutor = document.getElementById('livro-autor');
-const btnMudarLivro = document.getElementById('btn-mudar-livro');
-
-const listaMembrosPrint = document.getElementById('lista-usuarios-print');
-const areaAdminAdicionar = document.getElementById('area-admin-adicionar');
-const areaAdminSolicitacoes = document.getElementById('area-admin-solicitacoes');
-const listaSolicitacoesPrint = document.getElementById('lista-solicitacoes-print');
-const formAdicionarMembro = document.getElementById('form-adicionar-membro');
-const inputUsernameMembro = document.getElementById('input-username-membro');
-
+// --- Configuração Inicial ---
+const idClubeAtual = new URLSearchParams(window.location.search).get('id');
 let usuarioLogadoUid = null;
 let dadosClubeAtual = null;
 
-// ==========================================================================
-// MONITOR DE AUTENTICAÇÃO
-// ==========================================================================
+// --- Seleção Centralizada de Elementos DOM ---
+const DOM = {
+    txtNomeClube: document.getElementById('detalhe-nome-clube'),
+    txtDescClube: document.getElementById('detalhe-desc-clube'),
+    txtCodigoClube: document.getElementById('detalhe-codigo'),
+    txtContadorMembros: document.getElementById('contador-membros'),
+    badgePrivacidade: document.getElementById('badge-privacidade'),
+    imgLivroCapa: document.getElementById('livro-capa'),
+    txtLivroTitulo: document.getElementById('livro-titulo'),
+    txtLivroAutor: document.getElementById('livro-autor'),
+    listaMembrosPrint: document.getElementById('lista-usuarios-print'),
+    listaSolicitacoesPrint: document.getElementById('lista-solicitacoes-print'),
+    btnIrSugestoes: document.getElementById('btn-ir-sugestoes'),
+    formAdicionarMembro: document.getElementById('form-adicionar-membro'),
+    inputUsername: document.getElementById('input-username-membro'),
+    areaAdminAdicionar: document.getElementById('area-admin-adicionar'),
+    areaAdminSolicitacoes: document.getElementById('area-admin-solicitacoes')
+};
+
+// --- Monitor de Autenticação ---
 onAuthStateChanged(auth, (user) => {
     if (user) {
         usuarioLogadoUid = user.uid;
-        if (idClubeAtual) {
-            inicializarPainelClube();
-        } else {
-            alert("Clube inválido. Retornando...");
-            window.location.href = "clubes.html";
-        }
+        if (idClubeAtual) carregarDadosClube();
     } else {
         window.location.href = "login.html";
     }
 });
 
-// ==========================================================================
-// BUSCA DADOS NO FIRESTORE
-// ==========================================================================
-async function inicializarPainelClube() {
+// --- Carregamento de Dados ---
+async function carregarDadosClube() {
     try {
-        const docRef = doc(db, "clubes", idClubeAtual);
-        const docSnap = await getDoc(docRef);
-
-        if (!docSnap.exists()) {
-            alert("O clube procurado não existe.");
-            window.location.href = "clubes.html";
-            return;
+        const docSnap = await getDoc(doc(db, "clubes", idClubeAtual));
+        if (docSnap.exists()) {
+            dadosClubeAtual = docSnap.data();
+            await renderizarPainel();
+            gerenciarPermissoes();
         }
-
-        dadosClubeAtual = docSnap.data();
-
-        if (!dadosClubeAtual.membrosLista.includes(usuarioLogadoUid) && dadosClubeAtual.adminUid !== usuarioLogadoUid) {
-            alert("Acesso negado. Você não faz parte deste clube.");
-            window.location.href = "clubes.html";
-            return;
-        }
-
-        renderizarDadosDoClube();
-        verificarNivelPermissao();
-
-    } catch (error) {
-        console.error("Erro ao carregar painel:", error);
+    } catch (error) { 
+        console.error("Erro ao carregar clube:", error); 
     }
 }
 
-// ==========================================================================
-// RENDERIZAÇÃO DA INTERFACE
-// ==========================================================================
-function renderizarDadosDoClube() {
-    txtNomeClube.textContent = dadosClubeAtual.nome;
-    txtDescClube.textContent = dadosClubeAtual.descricao || "Sem descrição.";
-    txtCodigoClube.textContent = dadosClubeAtual.codigoConvite || "------";
-    txtContadorMembros.textContent = dadosClubeAtual.membrosLista ? dadosClubeAtual.membrosLista.length : 0;
+// --- Renderização Principal ---
+async function renderizarPainel() {
+    if (!dadosClubeAtual) return;
 
-    if (badgePrivacidade) {
+    // 1. Informações Básicas
+    if (DOM.txtNomeClube) DOM.txtNomeClube.textContent = dadosClubeAtual.nome || "Clube sem nome";
+    if (DOM.txtDescClube) DOM.txtDescClube.textContent = dadosClubeAtual.descricao || "Sem descrição.";
+    if (DOM.txtCodigoClube) DOM.txtCodigoClube.textContent = dadosClubeAtual.codigoConvite || "------";
+    if (DOM.txtContadorMembros) DOM.txtContadorMembros.textContent = dadosClubeAtual.membrosLista?.length || 0;
+
+    // 2. Distintivo de Privacidade
+    if (DOM.badgePrivacidade) {
         const ehPrivado = dadosClubeAtual.privacidade === 'privado';
-        badgePrivacidade.textContent = ehPrivado ? "🔒 Privado" : "🌐 Público";
-        badgePrivacidade.className = `badge-status ${ehPrivado ? 'status-privado' : 'status-publico'}`;
+        DOM.badgePrivacidade.textContent = ehPrivado ? "🔒 Privado" : "🌐 Público";
+        DOM.badgePrivacidade.className = `badge-status ${ehPrivado ? 'status-privado' : 'status-publico'}`;
     }
 
+    // 3. Bloco do Livro Atual
     if (dadosClubeAtual.livroAtual) {
-        txtLivroTitulo.textContent = dadosClubeAtual.livroAtual.titulo || "Nenhum livro em pauta";
-        txtLivroAutor.textContent = dadosClubeAtual.livroAtual.autor ? `Por: ${dadosClubeAtual.livroAtual.autor}` : "Autor não registrado";
-        imgLivroCapa.src = dadosClubeAtual.livroAtual.capaUrl || "https://placehold.co/120x180/fff0f2/5c4033?text=📖";
+        if (DOM.txtLivroTitulo) DOM.txtLivroTitulo.textContent = dadosClubeAtual.livroAtual.titulo || "Nenhum livro em pauta";
+        if (DOM.txtLivroAutor) DOM.txtLivroAutor.textContent = dadosClubeAtual.livroAtual.autor ? `Por: ${dadosClubeAtual.livroAtual.autor}` : "Autor não registrado";
+        if (DOM.imgLivroCapa) DOM.imgLivroCapa.src = dadosClubeAtual.livroAtual.capaUrl || "https://placehold.co/120x180/fff0f2/5c4033?text=📖";
     }
 
-    // Renderização da lista de membros ativos mapeando os IDs
-    if (listaMembrosPrint && dadosClubeAtual.membrosLista) {
-        listaMembrosPrint.innerHTML = "";
-        dadosClubeAtual.membrosLista.forEach((membroId) => {
-            const linha = document.createElement('div');
-            linha.className = "membro-item-linha";
-            const tagAdmin = membroId === dadosClubeAtual.adminUid ? " <span class='tag-admin-badge'>Admin</span>" : "";
-            
-            linha.innerHTML = `
-                <p style="margin:0; font-size:0.9rem; color:#333;">
-                    <i class="fa-solid fa-user" style="color:#8c6d58; margin-right:6px;"></i> ID: ${membroId.substring(0,8)}...${tagAdmin}
-                </p>
-            `;
-            listaMembrosPrint.appendChild(linha);
-        });
+    // 4. Renderização de Membros com Resolução de Usernames e Botões de Ação
+    if (DOM.listaMembrosPrint && dadosClubeAtual.membrosLista) {
+        DOM.listaMembrosPrint.innerHTML = "";
+        
+        for (const membroId of dadosClubeAtual.membrosLista) {
+            try {
+                const userSnap = await getDoc(doc(db, "usuarios", membroId));
+                const username = userSnap.exists() ? userSnap.data().username : `id:${membroId.substring(0,5)}`;
+                
+                const ehAdmin = membroId === dadosClubeAtual.adminUid;
+                const ehEuMesmo = membroId === usuarioLogadoUid;
+                const souAdminDoClube = dadosClubeAtual.adminUid === usuarioLogadoUid;
+
+                const linha = document.createElement('div');
+                linha.className = "membro-item-linha";
+                linha.innerHTML = `
+                    <p style="margin:0; font-size:0.9rem; color:#333;">
+                        <i class="fa-solid fa-user" style="color:#8c6d58; margin-right:6px;"></i> @${username} ${ehAdmin ? '<span class="tag-admin-badge">Admin</span>' : ''}
+                    </p>
+                    <div>
+                        ${(souAdminDoClube && !ehAdmin) ? `<button class="btn-excluir" data-uid="${membroId}" style="color:red; background:none; border:none; cursor:pointer; margin-left:8px;">Excluir</button>` : ''}
+                        ${(ehEuMesmo && !ehAdmin) ? `<button class="btn-sair" style="color:orange; background:none; border:none; cursor:pointer; margin-left:8px;">Sair</button>` : ''}
+                    </div>
+                `;
+                DOM.listaMembrosPrint.appendChild(linha);
+            } catch (err) {
+                console.error("Erro ao buscar dados do membro:", membroId, err);
+            }
+        }
     }
 }
 
-// ==========================================================================
-// CONTROLE DE PERMISSÕES
-// ==========================================================================
-function verificarNivelPermissao() {
+// --- Controle de Permissões e Solicitações ---
+function gerenciarPermissoes() {
     const ehAdmin = usuarioLogadoUid === dadosClubeAtual.adminUid;
 
+    if (DOM.areaAdminAdicionar) DOM.areaAdminAdicionar.style.display = ehAdmin ? "block" : "none";
+    if (DOM.areaAdminSolicitacoes) DOM.areaAdminSolicitacoes.style.display = ehAdmin ? "block" : "none";
+
     if (ehAdmin) {
-        if (btnMudarLivro) btnMudarLivro.style.display = "inline-block";
-        if (areaAdminAdicionar) areaAdminAdicionar.style.display = "block";
-        if (areaAdminSolicitacoes) areaAdminSolicitacoes.style.display = "block";
-        
         carregarSolicitacoesPendentes();
-    } else {
-        if (btnMudarLivro) btnMudarLivro.style.display = "none";
-        if (areaAdminAdicionar) areaAdminAdicionar.style.display = "none";
-        if (areaAdminSolicitacoes) areaAdminSolicitacoes.style.display = "none";
     }
 }
 
 function carregarSolicitacoesPendentes() {
-    if (!listaSolicitacoesPrint) return;
+    if (!DOM.listaSolicitacoesPrint) return;
     const fila = dadosClubeAtual.solicitacoesPendentes || [];
-    
+
     if (fila.length === 0) {
-        listaSolicitacoesPrint.innerHTML = `<p style="font-size:0.85rem; color:#888; font-style:italic; margin:5px 0 0 0;">Nenhuma solicitação pendente.</p>`;
+        DOM.listaSolicitacoesPrint.innerHTML = `<p style="font-size:0.85rem; color:#888; font-style:italic; margin:5px 0 0 0;">Nenhuma solicitação pendente.</p>`;
         return;
     }
 
-    listaSolicitacoesPrint.innerHTML = "";
+    DOM.listaSolicitacoesPrint.innerHTML = "";
     fila.forEach((uidSolicitante) => {
         const item = document.createElement('div');
         item.className = "solicitacao-item-linha";
         item.innerHTML = `
-            <span style="font-size:0.85rem; color:#333;">ID: ${uidSolicitante.substring(0,8)}...</span>
+            <span style="font-size:0.85rem; color:#333;">ID: ${uidSolicitante.substring(0, 8)}...</span>
             <div class="botoes-decisao">
                 <button class="btn-aprovar" data-uid="${uidSolicitante}"><i class="fa-solid fa-check"></i></button>
                 <button class="btn-recusar" data-uid="${uidSolicitante}"><i class="fa-solid fa-xmark"></i></button>
             </div>
         `;
-        listaSolicitacoesPrint.appendChild(item);
+        DOM.listaSolicitacoesPrint.appendChild(item);
     });
 }
 
-// ==========================================================================
-// ADICIONAR MEMBRO POR USERNAME (AÇÃO DA OPÇÃO 1)
-// ==========================================================================
-if (formAdicionarMembro) {
-    formAdicionarMembro.addEventListener('submit', async (e) => {
-        e.preventDefault();
+// --- Listeners e Eventos de Interação ---
 
-        // Pega o valor digitado e limpa o caractere '@' caso o admin tenha colocado
-        let usernameDigitado = inputUsernameMembro.value.trim().toLowerCase();
-        if (usernameDigitado.startsWith('@')) {
-            usernameDigitado = usernameDigitado.substring(1);
-        }
-
-        if (!usernameDigitado) return;
-
-        try {
-            const btnSubmit = formAdicionarMembro.querySelector('button');
-            btnSubmit.disabled = true;
-            btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-
-            // 1. Procura o usuário correspondente na coleção "usuarios" pelo username
-            const usuariosRef = collection(db, "usuarios");
-            const q = query(usuariosRef, where("username", "==", usernameDigitado));
-            const querySnapshot = await getDocs(q);
-
-            if (querySnapshot.empty) {
-                alert(`Usuário "@${usernameDigitado}" não foi encontrado no sistema.`);
-                return;
-            }
-
-            // 2. Captura os dados do usuário encontrado
-            let uidEncontrado = null;
-            querySnapshot.forEach((docUsuario) => {
-                uidEncontrado = docUsuario.data().uid || docUsuario.id;
-            });
-
-            // 3. Validações de segurança antes de adicionar
-            if (dadosClubeAtual.membrosLista.includes(uidEncontrado)) {
-                alert("Este usuário já faz parte do clube! ✨");
-                return;
-            }
-
-            // 4. Salva o novo membro direto no documento do clube no Firestore
-            const clubeDocRef = doc(db, "clubes", idClubeAtual);
-            await updateDoc(clubeDocRef, {
-                membrosLista: arrayUnion(uidEncontrado)
-            });
-
-            alert(`Usuário "@${usernameDigitado}" adicionado com sucesso ao grupo! 🎉`);
-            
-            // Limpa o campo e recarrega as informações atualizadas da tela
-            inputUsernameMembro.value = "";
-            inicializalizarPainelClube();
-
-        } catch (error) {
-            console.error("Erro ao adicionar membro por username:", error);
-            alert("Ocorreu um erro ao tentar processar a adição do membro.");
-        } finally {
-            const btnSubmit = formAdicionarMembro.querySelector('button');
-            btnSubmit.disabled = false;
-            btnSubmit.innerHTML = '<i class="fa-solid fa-plus"></i> Add';
+// 1. Redirecionamento do Botão de Sugestões
+if (DOM.btnIrSugestoes) {
+    DOM.btnIrSugestoes.addEventListener('click', () => {
+        if (idClubeAtual) {
+            window.location.href = `clube-sugestoes.html?id=${idClubeAtual}`;
         }
     });
 }
-// ==========================================================================
-// LÓGICA DE APROVAÇÃO / RECUSA DE MEMBROS (OPÇÃO 2)
-// ==========================================================================
 
-// Ouvinte de cliques na área de solicitações
-if (listaSolicitacoesPrint) {
-    listaSolicitacoesPrint.addEventListener('click', async (e) => {
-        // Encontra o botão que foi clicado (seja no ícone ou no botão em si)
+// 2. Cliques em Excluir Membro ou Sair do Clube
+if (DOM.listaMembrosPrint) {
+    DOM.listaMembrosPrint.addEventListener('click', async (e) => {
+        const btnExcluir = e.target.closest('.btn-excluir');
+        const btnSair = e.target.closest('.btn-sair');
+
+        if (!btnExcluir && !btnSair) return;
+
+        const uidAlvo = btnExcluir ? btnExcluir.dataset.uid : usuarioLogadoUid;
+        const msg = btnExcluir ? "Remover este membro do clube?" : "Você deseja sair deste clube?";
+
+        if (confirm(msg)) {
+            try {
+                await updateDoc(doc(db, "clubes", idClubeAtual), {
+                    membrosLista: arrayRemove(uidAlvo)
+                });
+                
+                if (btnSair) {
+                    window.location.href = "clubes.html";
+                } else {
+                    carregarDadosClube();
+                }
+            } catch (error) {
+                console.error("Erro ao modificar membros:", error);
+                alert("Não foi possível processar a ação.");
+            }
+        }
+    });
+}
+
+// 3. Decisão de Solicitações (Aprovar / Recusar)
+if (DOM.listaSolicitacoesPrint) {
+    DOM.listaSolicitacoesPrint.addEventListener('click', async (e) => {
         const botaoAprovar = e.target.closest('.btn-aprovar');
         const botaoRecusar = e.target.closest('.btn-recusar');
 
-        if (!botaoAprovar && !botaoRecusar) return; // Se não clicou em um botão, ignora
+        if (!botaoAprovar && !botaoRecusar) return;
 
-        // Captura o UID do solicitante guardado no atributo 'data-uid' do botão
         const uidSolicitante = botaoAprovar ? botaoAprovar.getAttribute('data-uid') : botaoRecusar.getAttribute('data-uid');
         const clubeDocRef = doc(db, "clubes", idClubeAtual);
 
         try {
-            // Desabilita temporariamente os botões daquela linha para evitar cliques duplos
             const containerBotoes = e.target.closest('.botoes-decisao');
             if (containerBotoes) containerBotoes.style.pointerEvents = "none";
 
-            // Criamos arrays locais baseados no estado atual para atualizar o Firebase de uma vez
             let novasSolicitacoes = (dadosClubeAtual.solicitacoesPendentes || []).filter(uid => uid !== uidSolicitante);
-            let novosMembros = [...(dadosClubeAtual.membrosLista || [])];
 
             if (botaoAprovar) {
-                // Se aprovado, insere o usuário na lista de membros ativos
-                if (!novosMembros.includes(uidSolicitante)) {
-                    novosMembros.push(uidSolicitante);
-                }
-                
-                // Atualiza o documento no Firestore com o usuário aprovado
                 await updateDoc(clubeDocRef, {
                     solicitacoesPendentes: novasSolicitacoes,
-                    membrosLista: novosMembros
+                    membrosLista: arrayUnion(uidSolicitante)
                 });
-                alert("Novo leitor aprovado e adicionado ao clube com sucesso! 📖");
-            } 
-            
-            else if (botaoRecusar) {
-                // Se recusado, apenas removemos da fila de espera
+                alert("Novo leitor aprovado com sucesso! 📖");
+            } else if (botaoRecusar) {
                 await updateDoc(clubeDocRef, {
                     solicitacoesPendentes: novasSolicitacoes
                 });
                 alert("Solicitação de entrada recusada.");
             }
 
-            // Atualiza os dados locais e recarrega o painel para refletir a mudança na tela
-            inicializarPainelClube();
+            carregarDadosClube();
+        } catch (error) {
+            console.error("Erro ao processar solicitação:", error);
+            alert("Erro ao processar a ação.");
+        }
+    });
+}
+
+// 4. Convidar Novo Membro por Form-Inline
+if (DOM.formAdicionarMembro) {
+    DOM.formAdicionarMembro.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        let usernameDigitado = DOM.inputUsername.value.trim().toLowerCase().replace('@', '');
+
+        if (!usernameDigitado) return;
+
+        const btnSubmit = DOM.formAdicionarMembro.querySelector('button');
+        try {
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+            const q = query(collection(db, "usuarios"), where("username", "==", usernameDigitado));
+            const querySnapshot = await getDocs(q);
+
+            if (querySnapshot.empty) {
+                alert(`Usuário "@${usernameDigitado}" não foi encontrado.`);
+                return;
+            }
+
+            const uidEncontrado = querySnapshot.docs[0].data().uid;
+
+            if (dadosClubeAtual.membrosLista.includes(uidEncontrado)) {
+                alert("Este usuário já faz parte do clube! ✨");
+                return;
+            }
+
+            await updateDoc(doc(db, "clubes", idClubeAtual), {
+                membrosLista: arrayUnion(uidEncontrado)
+            });
+
+            alert(`Usuário "@${usernameDigitado}" adicionado! 🎉`);
+            DOM.inputUsername.value = "";
+            carregarDadosClube();
 
         } catch (error) {
-            console.error("Erro ao processar decisão do administrador:", error);
-            alert("Não foi possível processar a ação. Tente novamente.");
+            console.error("Erro ao adicionar membro:", error);
+            alert("Ocorreu um erro ao processar a adição.");
+        } finally {
+            btnSubmit.disabled = false;
+            btnSubmit.innerHTML = '<i class="fa-solid fa-plus"></i> Add';
         }
     });
 }

@@ -156,8 +156,8 @@ body {
     margin: 0 0 1.5rem 0;
 }
 
-/* Botão Administrativo de Alterar Livro */
-.btn-admin {
+/* Botão Administrativo de Lista de Sugestões */
+.btn-secundario {
     background-color: var(--marrom-escuro);
     color: var(--branco);
     border: none;
@@ -173,11 +173,11 @@ body {
     transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
-.btn-admin:hover {
+.btn-secundario:hover {
     background-color: var(--marrom-claro);
 }
 
-.btn-admin:active {
+.btn-secundario:active {
     transform: scale(0.98);
 }
 

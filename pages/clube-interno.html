@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="../css/clube-interno.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
 
     <header class="clubes-header">
@@ -19,7 +21,8 @@
 
     <main class="painel-clube-container">
         <section class="clube-info-header">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+            <div
+                style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
                 <div>
                     <h2 id="detalhe-nome-clube">Carregando clube...</h2>
                     <p id="detalhe-desc-clube">Buscando informações no diário...</p>
@@ -32,7 +35,7 @@
         </section>
 
         <div class="painel-grid">
-            
+
             <section class="card-livro-ativo">
                 <h3><i class="fa-solid fa-book-open"></i> Livro em Pauta</h3>
                 <div class="livro-flex">
@@ -40,8 +43,8 @@
                     <div class="livro-status-dados">
                         <h4 id="livro-titulo">Nenhum livro selecionado</h4>
                         <p id="livro-autor">Autor não registrado</p>
-                        <button id="btn-mudar-livro" class="btn-admin" style="display: none;">
-                            <i class="fa-solid fa-pen"></i> Alterar Livro
+                        <button class="btn-secundario" id="btn-ir-sugestoes">
+                            <i class="fa-solid fa-jar"></i> Ir para Sugestões e Sorteio
                         </button>
                     </div>
                 </div>
@@ -49,7 +52,7 @@
 
             <section class="card-membros-lista">
                 <h3><i class="fa-solid fa-user-group"></i> Leitores no Clube (<span id="contador-membros">0</span>)</h3>
-                
+
                 <div id="area-admin-adicionar" class="box-sub-recurso" style="display: none;">
                     <h5>Convidar por Nome de Usuário</h5>
                     <form id="form-adicionar-membro" class="mini-form-inline">
@@ -61,12 +64,12 @@
                 <div id="area-admin-solicitacoes" class="box-sub-recurso" style="display: none;">
                     <h5><i class="fa-solid fa-clock-rotate-left"></i> Aguardando Aprovação</h5>
                     <div id="lista-solicitacoes-print">
-                        </div>
+                    </div>
                 </div>
 
                 <h5>Membros Ativos</h5>
                 <div id="lista-usuarios-print">
-                    </div>
+                </div>
             </section>
 
         </div>
@@ -74,4 +77,5 @@
 
     <script type="module" src="../js/clube-interno.js"></script>
 </body>
+
 </html>

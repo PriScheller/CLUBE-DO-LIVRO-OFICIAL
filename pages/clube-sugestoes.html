@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Sugestões e Sorteio - Clube do Livro</title>
+    <link rel="stylesheet" href="style.css"> <!-- Use o seu CSS principal ou crie um específico -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <button onclick="history.back()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+        <h1>Jarro de Leituras</h1>
+    </header>
+
+    <main class="container-sugestoes">
+        <!-- Coluna da Lista -->
+        <section class="coluna-lista">
+            <h3>Livros Sugeridos</h3>
+            <form id="form-adicionar-livro">
+                <input type="text" id="input-titulo-sugestao" placeholder="Digite o nome do livro..." required>
+                <button type="submit">Adicionar</button>
+            </form>
+            <div id="lista-sugestoes-print"></div>
+        </section>
+
+        <!-- Coluna do Jarro -->
+        <section class="coluna-jarro">
+            <h3>Sorteio</h3>
+            <div class="jarro-container" id="jarro-visual">
+                <img src="https://cdn-icons-png.flaticon.com/512/2807/2807833.png" alt="Jarro de Livros" id="img-jarro">
+                <p>Toque no jarro para sortear!</p>
+            </div>
+            <button id="btn-sortear" class="btn-destaque">Agitar e Sortear</button>
+        </section>
+    </main>
+
+    <script type="module" src="clube-sugestoes.js"></script>
+</body>
+</html>
