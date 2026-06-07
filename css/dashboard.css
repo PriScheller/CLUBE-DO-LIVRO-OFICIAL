@@ -1,116 +1,120 @@
 /* ==========================================
-   ESTILOS EXCLUSIVOS DO PAINEL (DASHBOARD)
+   ESTILOS GERAIS DO PAINEL (DASHBOARD)
    ========================================== */
 
-/* Cabeçalho superior */
-header {
-    background-color: var(--branco-puro);
-    padding: 1rem 10%;
+.dash-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--branco-puro);
+    border-bottom: 1px solid #f0e4e6;
     box-shadow: 0 2px 10px rgba(92, 64, 51, 0.02);
 }
 
-.logo h1 {
+.dash-logo h1 {
+    margin: 0;
     font-size: 1.4rem;
     color: var(--marrom-cozy);
 }
 
-.btn-login {
-    font-weight: 600;
-    color: var(--marrom-suave);
-    border: none;
-    transition: color 0.3s ease;
+/* Container de Pesquisa (Opção 3) */
+.dash-search-container {
+    flex: 1;
+    max-width: 500px;
+    margin: 0 2rem;
 }
 
-.btn-login:hover {
+.dash-search-form {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.dash-search-input {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    font-size: 0.9rem;
+}
+
+.dash-search-btn {
+    padding: 0.6rem 1.2rem;
+    background-color: var(--rosa-pastel-medio);
     color: var(--marrom-cozy);
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-/* Banner de boas-vindas */
+/* Área Principal */
+.dash-main {
+    max-width: 1000px;
+    margin: 3rem auto;
+    padding: 0 1rem;
+}
+
 .welcome-banner {
     background-color: var(--branco-puro);
     padding: 2rem;
     border-radius: 20px;
-    margin-bottom: 2rem;
     border-left: 5px solid var(--rosa-pastel-medio);
+    text-align: center;
+    margin-bottom: 3rem;
     box-shadow: 0 4px 15px rgba(92, 64, 51, 0.03);
 }
 
 .welcome-banner h2 {
-    font-size: 1.8rem;
+    margin-top: 0;
     color: var(--marrom-cozy);
-    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
 }
 
-.welcome-banner p {
-    color: var(--marrom-suave);
-}
-
-/* Grid de Layout */
-.dashboard-grid {
+/* Grid de Atalhos */
+.grid-atalhos {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 2rem;
 }
 
-/* Cards da Dashboard */
-.dash-card {
+.card-atalho {
     background-color: var(--branco-puro);
-    padding: 2rem;
-    border-radius: 25px;
-    border: 1px solid rgba(243, 198, 206, 0.4);
-    box-shadow: 0 8px 20px rgba(92, 64, 51, 0.04);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    transition: transform 0.3s ease;
-}
-
-.dash-card:hover {
-    transform: translateY(-4px);
-}
-
-.dash-card h3 {
-    font-size: 1.3rem;
+    padding: 3rem 2rem;
+    border-radius: 20px;
+    border: 2px solid #f0e4e6;
+    text-align: center;
+    text-decoration: none;
     color: var(--marrom-cozy);
+    font-weight: bold;
+    font-size: 1.4rem;
+    transition: transform 0.2s, border-color 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+}
+
+.card-atalho:hover {
+    transform: translateY(-4px);
+    border-color: var(--rosa-pastel-medio);
+}
+
+.card-atalho span {
+    display: block;
+    font-size: 3rem;
     margin-bottom: 1rem;
 }
 
-.dash-card p {
-    color: var(--marrom-suave);
-    font-size: 0.95rem;
-    line-height: 1.5;
-    margin-bottom: 1.5rem;
-}
-
-/* Botão CTA da Dashboard */
-.dash-card .btn-cta {
-    background-color: var(--rosa-pastel-medio);
+.btn-perfil {
+    background: none;
+    border: 1px solid var(--marrom-cozy);
+    padding: 0.5rem 1.2rem;
+    border-radius: 15px;
     color: var(--marrom-cozy);
-    font-weight: 700;
-    border-radius: 20px;
+    font-weight: bold;
     text-decoration: none;
-    padding: 0.6rem 1.5rem;
-    display: inline-block;
-    transition: background-color 0.3s ease;
-    width: auto;
-    text-align: center;
+    transition: all 0.3s;
 }
 
-.dash-card .btn-cta:hover {
-    background-color: #e8b5bd;
-}
-
-/* ==========================================
-   3. RODAPÉ (FOOTER)
-   ========================================== */
-footer {
-    text-align: center;
-    padding: 1.5rem;
-    font-size: 0.9rem;
-    color: var(--marrom-suave);
-    background-color: rgba(255, 255, 255, 0.5);
+.btn-perfil:hover {
+    background: var(--marrom-cozy);
+    color: white;
 }

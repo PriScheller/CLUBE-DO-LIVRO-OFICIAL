@@ -385,3 +385,33 @@
     margin-top: 0.5rem;
 }
 .btn-submit-form:hover { background-color: var(--marrom-claro); }
+
+/* Container de Pesquisa (Opção 3) */
+.dash-search-container {
+    flex: 1;
+    max-width: 500px;
+    margin: 0 2rem;
+}
+
+.dash-search-form {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.dash-search-input {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    font-size: 0.9rem;
+}
+
+.dash-search-btn {
+    padding: 0.6rem 1.2rem;
+    background-color: var(--rosa-pastel-medio);
+    color: var(--marrom-cozy);
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
