@@ -7,9 +7,46 @@
     <title>Meu Clube - Dashboard</title>
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/sidebar.css">
 </head>
 
 <body>
+
+    <aside class="cozy-sidebar">
+    <div class="sidebar-logo">
+        <h2>📖 Meu Clube</h2>
+    </div>
+
+    <nav class="sidebar-nav">
+        <ul>
+            <li>
+                <a href="dashboard.html" class="nav-link">
+                    <i class="fa-solid fa-chart-simple"></i> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="estante.html" class="nav-link">
+                    <i class="fa-solid fa-book"></i> Estante
+                </a>
+            </li>
+            <li>
+                <a href="clubes.html" class="nav-link">
+                    <i class="fa-solid fa-users"></i> Clubes
+                </a>
+            </li>
+            <li>
+                <a href="perfil.html" class="nav-link">
+                    <i class="fa-solid fa-user-gear"></i> Perfil
+                </a>
+            </li>
+            <li>
+                <a href="configuracoes.html" class="nav-link">
+                    <i class="fa-solid fa-gear"></i> Configurações
+                </a>
+            </li>
+        </ul>
+    </nav>
+</aside>
 
     <header class="dash-header">
         <div class="dash-logo">
@@ -23,7 +60,6 @@
                 <button type="submit" class="dash-search-btn">Pesquisar</button>
             </form>
         </div>
-
         <div>
             <a href="perfil.html" class="btn-perfil">Perfil</a>
         </div>
@@ -46,6 +82,8 @@
             </a>
         </section>
     </main>
+
+    <script src="../js/sidebar.js"></script>
 
 </body>
 

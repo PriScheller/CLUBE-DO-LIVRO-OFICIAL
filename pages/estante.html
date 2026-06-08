@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Clube - Minha Estante</title>
     <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/sidebar.css">
     <style>
         .estante-header {
             display: flex;
@@ -230,6 +231,42 @@
 
 <body>
 
+    <aside class="cozy-sidebar">
+    <div class="sidebar-logo">
+        <h2>📖 Meu Clube</h2>
+    </div>
+
+    <nav class="sidebar-nav">
+        <ul>
+            <li>
+                <a href="dashboard.html" class="nav-link">
+                    <i class="fa-solid fa-chart-simple"></i> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="estante.html" class="nav-link">
+                    <i class="fa-solid fa-book"></i> Estante
+                </a>
+            </li>
+            <li>
+                <a href="clubes.html" class="nav-link">
+                    <i class="fa-solid fa-users"></i> Clubes
+                </a>
+            </li>
+            <li>
+                <a href="perfil.html" class="nav-link">
+                    <i class="fa-solid fa-user-gear"></i> Perfil
+                </a>
+            </li>
+            <li>
+                <a href="configuracoes.html" class="nav-link">
+                    <i class="fa-solid fa-gear"></i> Configurações
+                </a>
+            </li>
+        </ul>
+    </nav>
+</aside>
+
     <header class="estante-header">
         <div class="estante-logo" onclick="window.location.href='dashboard.html'">
             <h1>📖 Meu Clube</h1>
@@ -255,6 +292,7 @@
     </div>
 
     <script type="module" src="../js/estante.js"></script>
+    <script src="../js/sidebar.js"></script>
 </body>
 
 </html>

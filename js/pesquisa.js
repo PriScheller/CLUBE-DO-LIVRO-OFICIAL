@@ -56,8 +56,8 @@ async function carregarClubesDoUsuario() {
     }
 }
 
-// 2. CAPTURA INICIAL DA URL (Otimizada e Unificada)
-window.addEventListener('DOMContentLoaded', () => {
+// Função isolada para ler parâmetros da URL e executar a busca de acordo com o estado atual da página
+function verificarParametrosERealizarBusca() {
     const params = new URLSearchParams(window.location.search);
     const termoInicial = params.get('busca');
 
@@ -75,13 +75,20 @@ window.addEventListener('DOMContentLoaded', () => {
             containerResultados.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:#888;">Digite o título de um livro no topo para pesquisar.</p>`;
         }
     }
-});
+}
+
+// 2. CAPTURA INICIAL DA URL (E escuta a navegação histórica do usuário)
+window.addEventListener('DOMContentLoaded', verificarParametrosERealizarBusca);
+
+// Captura se o usuário clicar nas setas de Voltar/Avançar do navegador mantendo a reatividade
+window.addEventListener('popstate', verificarParametrosERealizarBusca);
+
 
 // 3. EVENTOS DE DISPARO DA BARRA DE PESQUISA
 if (btnExecutar) {
     btnExecutar.addEventListener('click', (e) => {
         e.preventDefault();
-        executarNovaBusca();
+        ejecutarNovaBusca();
     });
 }
 
@@ -89,7 +96,7 @@ if (inputTermo) {
     inputTermo.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
-            executarNovaBusca();
+            ejecutarNovaBusca();
         }
     });
 }
@@ -98,7 +105,11 @@ function ejecutarNovaBusca() {
     const termo = inputTermo.value.trim();
     if (termo) {
         const novaUrl = `pesquisa.html?busca=${encodeURIComponent(termo)}`;
-        window.history.pushState({ path: novaUrl }, '', novaUrl);
+        
+        // Passamos o termo de busca dentro do estado do pushState
+        window.history.pushState({ busca: termo }, '', novaUrl);
+        
+        // Dispara a busca imediatamente sem precisar reiniciar a página
         buscarNaGoogleBooks(termo);
     }
 }
@@ -205,7 +216,7 @@ async function buscarNaGoogleBooks(termo) {
                 }, `btn-add-${index}`);
             });
 
-            // Ouvinte 2: Sugerir ao Jarro (Envia Objeto)
+            // Ouvinte 2: Sugerir ao Jarro
             document.getElementById(`btn-add-clube-${index}`).addEventListener('click', async () => {
                 const idClubeSelecionado = document.getElementById(`select-clube-${index}`).value;
                 if (!idClubeSelecionado) {

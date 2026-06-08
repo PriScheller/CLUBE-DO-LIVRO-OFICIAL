@@ -8,9 +8,46 @@
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/clubes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/sidebar.css">
 </head>
 
 <body>
+
+    <aside class="cozy-sidebar">
+    <div class="sidebar-logo">
+        <h2>📖 Meu Clube</h2>
+    </div>
+
+    <nav class="sidebar-nav">
+        <ul>
+            <li>
+                <a href="dashboard.html" class="nav-link">
+                    <i class="fa-solid fa-chart-simple"></i> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="estante.html" class="nav-link">
+                    <i class="fa-solid fa-book"></i> Estante
+                </a>
+            </li>
+            <li>
+                <a href="clubes.html" class="nav-link">
+                    <i class="fa-solid fa-users"></i> Clubes
+                </a>
+            </li>
+            <li>
+                <a href="perfil.html" class="nav-link">
+                    <i class="fa-solid fa-user-gear"></i> Perfil
+                </a>
+            </li>
+            <li>
+                <a href="configuracoes.html" class="nav-link">
+                    <i class="fa-solid fa-gear"></i> Configurações
+                </a>
+            </li>
+        </ul>
+    </nav>
+</aside>
 
     <header class="clubes-header">
         <div class="clubes-logo" onclick="window.location.href='dashboard.html'" style="cursor: pointer;">
@@ -24,7 +61,7 @@
                 <button type="submit" class="dash-search-btn">Buscar</button>
             </form>
         </div>
-        
+
     </header>
 
     <main class="clubes-container">
@@ -107,6 +144,7 @@
     </div>
 
     <script type="module" src="../js/clubes.js"></script>
+    <script src="../js/sidebar.js"></script>
 </body>
 
 </html>

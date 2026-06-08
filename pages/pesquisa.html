@@ -7,6 +7,7 @@
     <title>Meu Clube - Resultados da Busca</title>
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/estante.css">
+    <link rel="stylesheet" href="../css/sidebar.css">
     <style>
         /* Mantendo a identidade visual idêntica à Dashboard */
         .dash-header {
@@ -162,6 +163,42 @@
 
 <body>
 
+    <aside class="cozy-sidebar">
+    <div class="sidebar-logo">
+        <h2>📖 Meu Clube</h2>
+    </div>
+
+    <nav class="sidebar-nav">
+        <ul>
+            <li>
+                <a href="dashboard.html" class="nav-link">
+                    <i class="fa-solid fa-chart-simple"></i> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="estante.html" class="nav-link">
+                    <i class="fa-solid fa-book"></i> Estante
+                </a>
+            </li>
+            <li>
+                <a href="clubes.html" class="nav-link">
+                    <i class="fa-solid fa-users"></i> Clubes
+                </a>
+            </li>
+            <li>
+                <a href="perfil.html" class="nav-link">
+                    <i class="fa-solid fa-user-gear"></i> Perfil
+                </a>
+            </li>
+            <li>
+                <a href="configuracoes.html" class="nav-link">
+                    <i class="fa-solid fa-gear"></i> Configurações
+                </a>
+            </li>
+        </ul>
+    </nav>
+</aside>
+
     <header class="dash-header">
         <div class="dash-logo">
             <h1 style="cursor: pointer;" onclick="window.location.href='dashboard.html'">📖 Meu Clube</h1>
@@ -190,6 +227,7 @@
     </main>
 
     <script type="module" src="../js/pesquisa.js"></script>
+    <script src="../js/sidebar.js"></script>
 </body>
 
 </html>

@@ -3,12 +3,16 @@
    ========================================== */
 :root {
     /* Cores Principais */
-    --rosa-pastel-claro: #FFF0F2;  /* Fundo ultra suave */
-    --rosa-pastel-medio: #F3C6CE;  /* Detalhes, botões e destaques fofos */
-    --marrom-cozy: #5C4033;        /* Textos principais e cabeçalhos (tom de café/chocolate) */
-    --marrom-suave: #8B6553;       /* Textos secundários e bordas */
+    --rosa-pastel-claro: #FFF0F2;
+    /* Fundo ultra suave */
+    --rosa-pastel-medio: #F3C6CE;
+    /* Detalhes, botões e destaques fofos */
+    --marrom-cozy: #5C4033;
+    /* Textos principais e cabeçalhos (tom de café/chocolate) */
+    --marrom-suave: #8B6553;
+    /* Textos secundários e bordas */
     --branco-puro: #FFFFFF;
-    
+
     /* Fontes */
     --fonte-principal: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -28,4 +32,97 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+}
+
+/* --- LAYOUT DO SISTEMA COM SIDEBAR --- */
+body {
+    display: flex !important; /* Força o alinhamento lado a lado */
+    flex-direction: row !important;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: #fcf8f5;
+    overflow-x: hidden;
+}
+
+/* O container principal das suas páginas (Ex: .painel-grid, .pesquisa-main) deve se expandir */
+main,
+.painel-clube-container,
+.pesquisa-main {
+    flex: 1;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+/* --- ESTILIZAÇÃO DO MENU LATERAL --- */
+/* --- AJUSTE DA SIDEBAR --- */
+.cozy-sidebar {
+    width: 260px;
+    min-width: 260px; /* Impede a barra de espremer ou diminuir de tamanho */
+    background-color: #ffffff;
+    border-right: 1px solid #f0e4e6;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-sizing: border-box;
+}
+
+.sidebar-logo {
+    padding: 1.5rem;
+    border-bottom: 1px solid #fcf8f5;
+}
+
+.sidebar-logo h2 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: var(--marrom-cozy, #5C3A21);
+    font-family: serif;
+}
+
+.sidebar-nav {
+    flex: 1;
+    padding: 1rem 0;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Links Principais */
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.9rem 1.5rem;
+    color: #555;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.nav-link i {
+    width: 20px;
+    font-size: 1.1rem;
+    color: #8c7165;
+}
+
+.nav-link:hover, .nav-link.active {
+    background-color: #fff0f2;
+    color: var(--marrom-cozy, #5C3A21);
+}
+
+/* --- ESTILIZAÇÃO DO CONTEÚDO DA DIREITA --- */
+/* Certifique-se que o container principal de conteúdo da sua página use uma dessas tags ou classes */
+main, .conteudo-principal, .pesquisa-main {
+    flex: 1;
+    height: 100vh;
+    overflow-y: auto; /* Deixa apenas o conteúdo rolar, o menu fica parado! */
+    padding: 2rem;
+    box-sizing: border-box;
 }
