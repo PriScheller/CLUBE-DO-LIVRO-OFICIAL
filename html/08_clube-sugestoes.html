@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roleta de Leituras - Clube do Livro</title>
+    <link rel="stylesheet" href="../css/11_global.css">
+    <link rel="stylesheet" href="../css/08_clube-sugestoes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <aside class="cozy-sidebar">
+        <div class="sidebar-logo">
+            <h2>📖 Meu Clube</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="02_dashboard.html" class="nav-link">
+                        <i class="fa-solid fa-chart-simple"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="04_estante.html" class="nav-link">
+                        <i class="fa-solid fa-book"></i> Estante
+                    </a>
+                </li>
+                <li>
+                    <a href="06_clubes.html" class="nav-link">
+                        <i class="fa-solid fa-users"></i> Clubes
+                    </a>
+                </li>
+                <li>
+                    <a href="09_perfil.html" class="nav-link">
+                        <i class="fa-solid fa-user-gear"></i> Perfil
+                    </a>
+                </li>
+                <li>
+                    <a href="10_configuracoes.html" class="nav-link">
+                        <i class="fa-solid fa-gear"></i> Configurações
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <div class="container">
+        <header class="header-roleta-container">
+            <div class="header-roleta-topo">
+                <button id="btn-voltar" class="btn-secundario">
+                    <i class="fa-solid fa-arrow-left"></i> Voltar ao Painel
+                </button>
+                <h1><i class="fa-solid fa-dharmachakra"></i> Roleta de Leituras</h1>
+            </div>
+
+            <div class="search-bar-atalho">
+                <form id="form-pesquisa-atalho" class="search-form">
+                    <div class="search-input-wrapper">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" id="input-pesquisa-atalho"
+                            placeholder="Pesquise títulos ou autores para adicionar à roleta..." required>
+                        <button type="submit" class="btn-pesquisar-atalho">Buscar</button>
+                    </div>
+                </form>
+            </div>
+        </header>
+
+        <div class="painel-roleta-grid">
+
+            <section class="card-sugestoes">
+                <h2><i class="fa-solid fa-book-bookmark"></i> Livros no Sorteio</h2>
+                <div id="lista-sugestoes-print" class="lista-sugestoes">
+                    <p class="msg-vazia">Carregando livros salvos...</p>
+                </div>
+            </section>
+
+            <section class="card-roleta-visual">
+                <div class="roleta-wrapper">
+                    <div class="marcador-roleta"></div>
+                    <canvas id="canvas-roleta" width="400" height="400"></canvas>
+                </div>
+
+                <div class="controles-sorteio">
+                    <button id="btn-sortear" class="btn-principal">
+                        <i class="fa-solid fa-play"></i> Girar Roleta!
+                    </button>
+                </div>
+
+                <div id="resultado-sorteio-box" class="resultado-box hidden">
+                    <h3><i class="fa-solid fa-trofeu"></i> Livro Sorteado!</h3>
+                    <p id="txt-livro-sorteado">Nome do Livro</p>
+                    <button id="btn-definir-leitura" class="btn-sucesso hidden">
+                        <i class="fa-solid fa-check"></i> Definir como Leitura Oficial
+                    </button>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script>
+        // Lógica de retorno ao painel interno do clube
+        document.getElementById('btn-voltar').addEventListener('click', function (e) {
+            e.preventDefault();
+            const urlParams = new URLSearchParams(window.location.search);
+            const idClube = urlParams.get('id');
+
+            if (idClube) {
+                window.location.href = "07_clube-interno.html?id=" + idClube;
+            } else {
+                window.history.back();
+            }
+        });
+
+        // Formulário de busca rápida
+        document.getElementById('form-pesquisa-atalho').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const urlParams = new URLSearchParams(window.location.search);
+            const idClube = urlParams.get('id');
+            const termoPesquisa = document.getElementById('input-pesquisa-atalho').value.trim();
+
+            if (!termoPesquisa) return;
+
+            // Se você ainda não removeu os números dos arquivos físicos, mude abaixo para '03_pesquisa.html'
+            const destinoPesquisa = "03_pesquisa.html";
+
+            if (idClube) {
+                window.location.href = `${destinoPesquisa}?busca=${encodeURIComponent(termoPesquisa)}&clubeId=${idClube}`;
+            } else {
+                window.location.href = `${destinoPesquisa}?busca=${encodeURIComponent(termoPesquisa)}`;
+            }
+        });
+    </script>
+
+    <script src="../js/11_sidebar.js"></script>
+    <script src="../js/08_clube-sugestoes.js" type="module"></script>
+
+</body>
+
+</html>

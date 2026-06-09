@@ -1,0 +1,720 @@
+/* ==========================================================================
+   PALETA COZY E VARIÁVEIS DE INTERFACE
+   ========================================================================== */
+:root {
+    --marrom-escuro: #5c4033;
+    --marrom-claro: #8a6d60;
+    --rosa-fundo: #fff0f2;
+    --rosa-pastel-medio: #f7d6d9;
+    --rosa-pastel-suave: #fffcf9;
+    --rosa-borda: #f0e4e6;
+    --cinza-texto: #333333;
+    --branco: #ffffff;
+    --verde-sucesso: #28a745;
+    --vermelho-alerta: #dc3545;
+}
+
+/* Base de layout para manter o alinhamento com a sidebar fixa */
+.main-content {
+    margin-left: 260px;
+    /* Largura padrão da nossa sidebar */
+    padding: 2rem;
+    background-color: var(--rosa-fundo);
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.painel-clube-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Navigation Header Superior */
+.main-header {
+    display: flex;
+    align-items: center;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--rosa-borda);
+    margin-bottom: 2rem;
+}
+
+.btn-voltar-link {
+    text-decoration: none;
+    color: var(--marrom-claro);
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.2s ease;
+}
+
+.btn-voltar-link:hover {
+    color: var(--marrom-escuro);
+}
+
+/* ==========================================================================
+   CABEÇALHO RESUMO DO CLUBE (INFO HEADER)
+   ========================================================================== */
+.clube-info-header {
+    background: var(--branco);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(92, 64, 51, 0.02);
+    margin-bottom: 2rem;
+    border: 1px solid var(--rosa-borda);
+}
+
+.clube-meta-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.clube-titulos h2 {
+    color: var(--marrom-escuro);
+    font-family: serif;
+    margin: 0 0 0.5rem 0;
+    font-size: 2rem;
+}
+
+.clube-titulos p {
+    color: #666;
+    margin: 0 0 1rem 0;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    max-width: 800px;
+}
+
+.codigo-compartilhamento {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--rosa-fundo);
+    color: var(--marrom-escuro);
+    padding: 0.6rem 1.2rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    border: 1px dashed var(--marrom-claro);
+}
+
+.codigo-compartilhamento strong {
+    font-size: 1.05rem;
+    letter-spacing: 1px;
+    color: var(--marrom-escuro);
+}
+
+/* Badges de Privacidade */
+.badge-status {
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.status-publico {
+    background-color: #e2f0d9;
+    color: #385723;
+}
+
+.status-privado {
+    background-color: #fce4d6;
+    color: #c65911;
+}
+
+/* ==========================================================================
+   GRID DE CONTEÚDO (MURAL DE COMPONENTES)
+   ========================================================================== */
+.painel-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.card-clube-interno {
+    background: var(--branco);
+    padding: 1.8rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(92, 64, 51, 0.02);
+    border: 1px solid var(--rosa-borda);
+    margin-bottom: 1.5rem;
+}
+
+.card-clube-interno h3 {
+    color: var(--marrom-escuro);
+    font-family: serif;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+    border-bottom: 2px solid var(--rosa-fundo);
+    padding-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ==========================================================================
+   ELEMENTOS DE SESSÃO: LIVRO ATUAL
+   ========================================================================== */
+.livro-flex {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+}
+
+#livro-capa {
+    width: 120px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: var(--rosa-fundo);
+    transition: transform 0.2s ease;
+}
+
+#livro-capa:hover {
+    transform: scale(1.02);
+}
+
+.livro-status-dados {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+#livro-titulo {
+    color: var(--cinza-texto);
+    font-size: 1.4rem;
+    margin: 0 0 0.4rem 0;
+    line-height: 1.3;
+}
+
+#livro-autor {
+    color: #777;
+    font-size: 1rem;
+    margin: 0 0 1.5rem 0;
+}
+
+/* Botões Customizados Cozy */
+.btn-cozy-acao {
+    padding: 0.6rem 1.2rem;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 0.88rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    align-self: flex-start;
+    transition: all 0.2s ease;
+}
+
+.btn-cozy-acao.btn-secundario {
+    background-color: transparent;
+    border: 1px solid var(--marrom-escuro);
+    color: var(--marrom-escuro);
+}
+
+.btn-cozy-acao.btn-secundario:hover {
+    background-color: var(--rosa-fundo);
+}
+
+/* ==========================================================================
+   SISTEMA DE VOTAÇÕES E URNAS INTERNAS
+   ========================================================================== */
+.sugerir-opcao-votacao-box {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px dashed var(--rosa-borda);
+}
+
+.form-interno-cozy {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.form-interno-cozy h5 {
+    margin: 0;
+    color: var(--marrom-escuro);
+    font-size: 0.95rem;
+}
+
+.form-interno-cozy input[type="text"] {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--rosa-borda);
+    border-radius: 8px;
+    background-color: var(--rosa-pastel-suave);
+    font-size: 0.88rem;
+    outline: none;
+}
+
+.form-interno-cozy input[type="text"]:focus {
+    background-color: var(--branco);
+    border-color: var(--marrom-claro);
+}
+
+.form-acoes-inline {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 0.2rem;
+}
+
+.label-prazo {
+    font-size: 0.85rem;
+    color: var(--marrom-claro);
+    font-weight: 600;
+}
+
+.label-prazo input[type="date"] {
+    padding: 0.4rem;
+    border: 1px solid var(--rosa-borda);
+    border-radius: 6px;
+    margin-left: 0.4rem;
+    font-family: inherit;
+}
+
+/* Urnas Ativas */
+.voto-pergunta-titulo {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--marrom-escuro);
+    margin-bottom: 0.3rem;
+}
+
+.voto-prazo-data {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--marrom-claro);
+    margin-bottom: 1rem;
+}
+
+.opcao-voto-card {
+    background: var(--rosa-pastel-suave);
+    border: 1px solid var(--rosa-borda);
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.voto-info strong {
+    color: var(--cinza-texto);
+}
+
+.voto-info p {
+    font-size: 0.8rem;
+    color: var(--marrom-claro);
+    margin: 2px 0 0 0;
+}
+
+.btn-votar-opcao {
+    background-color: var(--marrom-claro);
+    color: var(--branco);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.85rem;
+    transition: background-color 0.2s ease;
+}
+
+.btn-votar-opcao:hover {
+    background-color: var(--marrom-escuro);
+}
+
+.historico-votacoes-container {
+    margin-top: 1.5rem;
+    padding-top: 1.2rem;
+    border-top: 2px solid var(--rosa-fundo);
+}
+
+.historico-votacoes-container h4 {
+    margin: 0 0 0.8rem 0;
+    color: var(--marrom-claro);
+    font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   DIÁRIO DE BORDO (SISTEMA DE COMENTÁRIOS E CHAT)
+   ========================================================================== */
+.lista-comentarios-scroller {
+    max-height: 250px;
+    overflow-y: auto;
+    border: 1px solid var(--rosa-borda);
+    border-radius: 10px;
+    padding: 0.8rem;
+    background: var(--rosa-pastel-suave);
+    margin-bottom: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.form-comentario-flex {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.form-comentario-flex input {
+    flex: 1;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--rosa-borda);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+.form-comentario-flex input:focus {
+    border-color: var(--marrom-claro);
+}
+
+.btn-send-chat {
+    background-color: var(--marrom-escuro);
+    color: var(--branco);
+    border: none;
+    padding: 0 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-send-chat:hover {
+    background-color: var(--marrom-claro);
+}
+
+/* ==========================================================================
+   PROGRESSO DE PARTICIPANTES E LEITURAS
+   ========================================================================== */
+.membro-progresso-item {
+    margin-bottom: 1rem;
+}
+
+.membro-progresso-topo {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.88rem;
+    margin-bottom: 0.3rem;
+    color: var(--cinza-texto);
+}
+
+.barra-progresso-fundo {
+    background-color: var(--rosa-borda);
+    border-radius: 10px;
+    height: 10px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.barra-progresso-preenchimento {
+    background-color: var(--marrom-claro);
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.4s ease;
+}
+
+.meu-progresso-form {
+    margin-top: 1.2rem;
+    padding-top: 1.2rem;
+    border-top: 1px dashed var(--rosa-borda);
+}
+
+.meu-progresso-form h4 {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--marrom-escuro);
+}
+
+.input-progresso-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.6rem;
+}
+
+.input-progresso-group input {
+    width: 65px;
+    padding: 0.4rem;
+    border: 1px solid var(--rosa-borda);
+    border-radius: 6px;
+    text-align: center;
+    outline: none;
+}
+
+.sufixo-porcentagem {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--marrom-claro);
+}
+
+/* ==========================================================================
+   MURAL DE AVISOS DO COZY CLUB
+   ========================================================================== */
+.mural-texto {
+    background-color: var(--rosa-pastel-suave);
+    border-left: 4px solid var(--marrom-claro);
+    padding: 0.8rem 1rem;
+    font-style: italic;
+    color: var(--marrom-escuro);
+    border-radius: 0 10px 10px 0;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+#textarea-mural {
+    width: 100%;
+    height: 70px;
+    margin: 0.8rem 0;
+    border: 1px solid var(--rosa-borda);
+    border-radius: 8px;
+    padding: 0.6rem;
+    resize: none;
+    box-sizing: border-box;
+    font-family: inherit;
+    outline: none;
+}
+
+#textarea-mural:focus {
+    border-color: var(--marrom-claro);
+}
+
+/* ==========================================================================
+   HISTÓRICO DE LEITURAS ENCERRADAS (GRID CARDS)
+   ========================================================================== */
+.historico-livros-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.historico-card {
+    background: var(--rosa-pastel-suave);
+    border: 1px solid var(--rosa-borda);
+    border-radius: 10px;
+    padding: 0.6rem;
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+}
+
+.capa-historico {
+    width: 40px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.detalhes-historico h4 {
+    font-size: 0.88rem;
+    color: var(--marrom-escuro);
+    margin: 0;
+}
+
+.detalhes-historico p {
+    font-size: 0.78rem;
+    color: #666;
+    margin: 2px 0;
+}
+
+.estrelas-media {
+    color: #d9b48f;
+    font-size: 0.8rem;
+}
+
+/* ==========================================================================
+   GERENCIAMENTO DE LEITORES (SISTEMA DE ADM/MEMBROS)
+   ========================================================================== */
+.lista-usuarios-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.membro-item-linha {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 8px;
+}
+
+.membro-item-linha:hover {
+    background-color: var(--rosa-pastel-suave);
+}
+
+#contador-membros {
+    background-color: var(--rosa-fundo);
+    color: var(--marrom-escuro);
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+}
+
+.box-sub-recurso {
+    background: var(--rosa-pastel-suave);
+    border: 1px solid var(--rosa-borda);
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.box-sub-recurso h5 {
+    margin: 0 0 0.6rem 0;
+    color: var(--marrom-escuro);
+    font-size: 0.9rem;
+}
+
+.subtitulo-membros {
+    margin: 1rem 0 0.5rem 0;
+    color: var(--marrom-claro);
+    font-size: 0.9rem;
+}
+
+.mini-form-inline {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.mini-form-inline input {
+    flex: 1;
+    padding: 0.4rem;
+    border: 1px solid var(--rosa-borda);
+    border-radius: 6px;
+    font-size: 0.85rem;
+}
+
+.btn-mini-acao {
+    background-color: var(--marrom-escuro);
+    color: var(--branco);
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.85rem;
+}
+
+.solicitacao-item-linha {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--branco);
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid var(--rosa-borda);
+    margin-bottom: 0.4rem;
+}
+
+.botoes-decisao {
+    display: flex;
+    gap: 0.3rem;
+}
+
+.botoes-decisao button {
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    font-size: 0.8rem;
+}
+
+.btn-aprovar {
+    background-color: var(--verde-sucesso);
+}
+
+.btn-recusar {
+    background-color: var(--vermelho-alerta);
+}
+
+.tag-admin-badge {
+    font-size: 0.65rem;
+    background: var(--marrom-escuro);
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 5px;
+}
+
+/* Classes Utilitárias Mini */
+.btn-cozy-mini {
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.82rem;
+    transition: opacity 0.2s ease;
+}
+
+.btn-cozy-mini:hover {
+    opacity: 0.9;
+}
+
+.btn-marrom-acao {
+    background-color: var(--marrom-escuro);
+    color: var(--branco);
+}
+
+.btn-bege-acao {
+    background-color: var(--marrom-claro);
+    color: var(--branco);
+}
+
+.msg-vazia {
+    text-align: center;
+    color: #999;
+    font-size: 0.9rem;
+    padding: 1rem 0;
+    margin: 0;
+}
+
+.msg-vazia-mini {
+    color: #aaa;
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+.hidden-elemento {
+    display: none;
+}
+
+/* ==========================================================================
+   REGRAS DE RESPONSIVIDADE (MEDIA QUERIES)
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .main-content {
+        margin-left: 0;
+        padding: 1.5rem;
+    }
+
+    .painel-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .livro-flex {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .form-comentario-flex {
+        flex-direction: column;
+    }
+
+    .btn-send-chat {
+        padding: 0.6rem;
+    }
+}

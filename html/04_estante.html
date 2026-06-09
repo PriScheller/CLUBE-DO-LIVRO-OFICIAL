@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Clube - Minha Estante</title>
+    <link rel="stylesheet" href="../css/11_global.css">
+    <link rel="stylesheet" href="../css/04_estante.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="layout-interno">
+
+    <aside class="cozy-sidebar">
+        <div class="sidebar-logo">
+            <h2>📖 Meu Clube</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="02_dashboard.html" class="nav-link">
+                        <i class="fa-solid fa-chart-simple"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="04_estante.html" class="nav-link">
+                        <i class="fa-solid fa-book"></i> Estante
+                    </a>
+                </li>
+                <li>
+                    <a href="06_clubes.html" class="nav-link">
+                        <i class="fa-solid fa-users"></i> Clubes
+                    </a>
+                </li>
+                <li>
+                    <a href="09_perfil.html" class="nav-link">
+                        <i class="fa-solid fa-user-gear"></i> Perfil
+                    </a>
+                </li>
+                <li>
+                    <a href="10_configuracoes.html" class="nav-link">
+                        <i class="fa-solid fa-gear"></i> Configurações
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <div class="main-content">
+
+        <header class="dash-header">
+            <div class="header-title-context">
+                <h1 style="cursor: pointer;" onclick="window.location.href='02_dashboard.html'">📖 Minha Estante</h1>
+            </div>
+
+            <div class="dash-actions">
+                <span class="user-welcome">Olá, Pri Scheller ✨</span>
+                <a href="09_perfil.html" class="btn-perfil-header">Perfil</a>
+                <a href="02_dashboard.html" class="btn-voltar-painel" title="Voltar ao Painel">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </a>
+            </div>
+        </header>
+
+        <div class="estante-container">
+
+            <aside class="menu-lateral">
+                <h3 class="menu-titulo">Minhas Prateleiras</h3>
+                <button class="btn-aba ativo" data-status="lendo">
+                    <i class="fa-solid fa-mug-hot"></i> Lendo
+                </button>
+                <button class="btn-aba" data-status="quero-ler">
+                    <i class="fa-solid fa-thumbtack"></i> Quero Ler
+                </button>
+                <button class="btn-aba" data-status="lidos">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Lidos
+                </button>
+            </aside>
+
+            <main class="conteudo-estante">
+                <h2 id="titulo-secao-atual" class="secao-titulo">☕ Lendo Atualmente</h2>
+                <div class="livros-grid" id="grid-livros-estante">
+                </div>
+            </main>
+
+        </div>
+    </div>
+
+    <script src="../js/11_sidebar.js"></script>
+    <script type="module" src="../js/04_estante.js"></script>
+</body>
+
+</html>
