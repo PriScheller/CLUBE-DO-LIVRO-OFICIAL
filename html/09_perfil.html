@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - Clube do Livro</title>
+    <link rel="stylesheet" href="../css/11_global.css">
+    <link rel="stylesheet" href="../css/09_perfil.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="layout-interno">
+    <aside class="cozy-sidebar">
+        <div class="sidebar-logo">
+            <h2>📖 Meu Clube</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="02_dashboard.html" class="nav-link">
+                        <i class="fa-solid fa-chart-simple"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="04_estante.html" class="nav-link">
+                        <i class="fa-solid fa-book"></i> Estante
+                    </a>
+                </li>
+                <li>
+                    <a href="06_clubes.html" class="nav-link">
+                        <i class="fa-solid fa-users"></i> Clubes
+                    </a>
+                </li>
+                <li>
+                    <a href="09_perfil.html" class="nav-link">
+                        <i class="fa-solid fa-user-gear"></i> Perfil
+                    </a>
+                </li>
+                <li>
+                    <a href="10_configuracoes.html" class="nav-link">
+                        <i class="fa-solid fa-gear"></i> Configurações
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <div class="container-perfil">
+
+        <header class="card-leitor-header">
+            <div class="perfil-avatar-wrapper">
+                <img id="perfil-avatar" src="https://placehold.co/120x120/f1e6da/5c3a21?text=👤" alt="Foto de Perfil">
+                <label for="input-avatar" class="btn-trocar-foto" title="Alterar foto de perfil">
+                    <i class="fa-solid fa-camera"></i>
+                </label>
+                <input type="file" id="input-avatar" accept="image/*" hidden>
+            </div>
+
+            <div class="perfil-identidade">
+                <div class="nome-container">
+                    <h1 id="txt-perfil-nome">Carregando nome...</h1>
+                    <span id="tag-admin-status" class="tag-admin hidden">👑 Criador de Clubes</span>
+                </div>
+                <p id="txt-perfil-email" class="perfil-email">...</p>
+                <p id="txt-perfil-data" class="perfil-membro-desde"><i class="fa-solid fa-calendar-days"></i> Membro
+                    desde...</p>
+            </div>
+        </header>
+
+        <div class="perfil-grid">
+
+            <div class="perfil-col-esquerda">
+
+                <section class="card-perfil-info">
+                    <h2><i class="fa-solid fa-chart-pie"></i> Conquistas de Leitura</h2>
+                    <div class="estatisticas-painel">
+                        <div class="estatistica-item">
+                            <span id="num-livros-lidos" class="estatistica-numero">0</span>
+                            <span class="estatistica-rotulo">Livros Lidos</span>
+                        </div>
+                        <div class="estatistica-item">
+                            <span id="num-paginas-lidas" class="estatistica-numero">0</span>
+                            <span class="estatistica-rotulo">Páginas Lidas</span>
+                        </div>
+                        <div class="estatistica-item">
+                            <span id="num-clubes-participando" class="estatistica-numero">0</span>
+                            <span class="estatistica-rotulo">Clubes Ativos</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card-perfil-info">
+                    <h2><i class="fa-solid fa-heart"></i> Gostos Literários</h2>
+                    <div class="gostos-container">
+                        <h3>Gêneros Favoritos</h3>
+                        <div id="lista-generos-tags" class="tags-generos">
+                            <span class="tag-genero">Suspense</span>
+                            <span class="tag-genero">Romance</span>
+                            <span class="tag-genero">Fantasia</span>
+                        </div>
+
+                        <div class="livro-da-vida-box">
+                            <h3><i class="fa-solid fa-star"></i> Livro Favorito da Vida</h3>
+                            <div class="livro-vida-conteudo">
+                                <i class="fa-solid fa-book-open-reader icone-livro-vida"></i>
+                                <input type="text" id="input-livro-favorito"
+                                    placeholder="Qual o seu livro favorito número um?" class="input-cozy">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="perfil-col-direita">
+                <section class="card-perfil-info">
+                    <h2><i class="fa-solid fa-user-pen"></i> Editar Informações</h2>
+                    <form id="form-editar-perfil" class="form-cozy-perfil">
+                        <div class="grupo-campo">
+                            <label for="input-nome">Nome Completo</label>
+                            <input type="text" id="input-nome" placeholder="Seu nome" required class="input-cozy">
+                        </div>
+
+                        <div class="grupo-campo">
+                            <label for="input-username">Nome de Usuário (@)</label>
+                            <input type="text" id="input-username" placeholder="ex: pri_scheller" required
+                                class="input-cozy">
+                        </div>
+
+                        <div class="grupo-campo">
+                            <label for="input-bio">Minha Biografia Leitora</label>
+                            <textarea id="input-bio" rows="4"
+                                placeholder="Conte um pouco sobre suas leituras e hábitos..."
+                                class="input-cozy text-area-cozy"></textarea>
+                        </div>
+
+                        <button type="submit" id="btn-salvar-perfil" class="btn-salvar">
+                            <i class="fa-solid fa-floppy-disk"></i> Salvar Alterações
+                        </button>
+                    </form>
+                </section>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="../js/11_sidebar.js"></script>
+    <script src="../js/09_perfil.js" type="module"></script>
+
+</body>
+
+</html>
