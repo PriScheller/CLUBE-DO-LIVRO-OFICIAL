@@ -1,0 +1,266 @@
+body {
+    background-color: #FDF8F5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #4A3525;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.container-config {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.config-header {
+    margin-bottom: 35px;
+}
+
+.config-header h1 {
+    margin: 0 0 8px 0;
+    font-size: 28px;
+    color: #5C3A21;
+}
+
+.config-header p {
+    margin: 0;
+    color: #8C6239;
+    font-size: 15px;
+}
+
+/* Layout Grid das Configurações */
+.config-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 25px;
+}
+
+.card-config {
+    background: #FFF;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(92, 58, 33, 0.04);
+    border: 1px solid #F1E6DA;
+}
+
+.card-config h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #5C3A21;
+    border-bottom: 1px solid #F1E6DA;
+    padding-bottom: 10px;
+}
+
+/* Formulários internos */
+.form-cozy-config {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 500px;
+}
+
+.grupo-campo-config {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.grupo-campo-config label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #5C3A21;
+}
+
+/* Inputs Estilizados */
+.input-cozy,
+.select-cozy {
+    border: 1px solid #D9B48F;
+    background-color: #FFF;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #4A3525;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.input-cozy:focus,
+.select-cozy:focus {
+    border-color: #5C3A21;
+    box-shadow: 0 0 0 3px rgba(92, 58, 33, 0.08);
+}
+
+.input-cozy-disabled {
+    border: 1px solid #F1E6DA;
+    background-color: #F9F5F0;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #A67C52;
+    cursor: not-allowed;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Botões de Ação */
+.btn-config-acao {
+    background-color: #A67C52;
+    color: #FFF;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
+    transition: background 0.2s;
+    margin-top: 5px;
+}
+
+.btn-config-acao:hover {
+    background-color: #5C3A21;
+}
+
+/* Lista de Toggles (Switches) */
+.opcoes-toggle-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.toggle-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #F1E6DA;
+}
+
+.toggle-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.toggle-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.toggle-titulo {
+    font-size: 15px;
+    font-weight: 600;
+    color: #4A3525;
+}
+
+.toggle-descricao {
+    font-size: 13px;
+    color: #8C6239;
+}
+
+/* --- Switch Estilo iOS / Android Customizado --- */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #E2D4C5;
+    transition: .3s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .3s;
+}
+
+input:checked+.slider {
+    background-color: #5C3A21;
+    /* Cor escura aconchegante ao ativar */
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #5C3A21;
+}
+
+input:checked+.slider:before {
+    transform: translateX(22px);
+}
+
+.slider.round {
+    border-radius: 24px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Card Zona de Perigo */
+.card-perigo {
+    border: 1px solid #FADBD8;
+    background-color: #FDf2F2;
+}
+
+.card-perigo h2 {
+    color: #C0392B;
+    border-bottom: 1px solid #FADBD8;
+}
+
+.perigo-conteudo p {
+    font-size: 14px;
+    color: #7B241C;
+    margin: 0 0 15px 0;
+    line-height: 1.5;
+}
+
+.btn-perigo {
+    background-color: #E74C3C;
+    color: #FFF;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s;
+}
+
+.btn-perigo:hover {
+    background-color: #C0392B;
+}

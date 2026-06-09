@@ -1,0 +1,516 @@
+/* ==========================================================================
+   PALETA DE CORES E VARIÁVEIS COZY
+   ========================================================================== */
+:root {
+    --marrom-cozy: #5c4033;
+    --marrom-claro: #8a6d60;
+    --rosa-pastel-claro: #FFF0F2;
+    --rosa-pastel-medio: #e8b5bd;
+    --rosa-pastel-suave: #fff0f2;
+    --rosa-borda: #f0e4e6;
+    --cinza-texto: #333333;
+    --cinza-subtil: #999999;
+    --branco: #ffffff;
+    --verde-sucesso: #28a745;
+    --verde-hover: #218838;
+    --vermelho-deletar: #cc0000;
+}
+
+/* ==========================================================================
+   ESTRUTURA E CONTAINER PRINCIPAL CARD
+   ========================================================================== */
+.ficha-main {
+    max-width: 850px;
+    margin: 2rem auto;
+    padding: 2.5rem;
+    background: var(--branco);
+    border-radius: 20px;
+    border: 1px solid var(--rosa-borda);
+    box-shadow: 0 8px 24px rgba(92, 64, 51, 0.03);
+}
+
+.subtitulo-ficha {
+    font-family: serif;
+    color: var(--marrom-cozy);
+    font-size: 1.4rem;
+    margin: 0 0 1.2rem 0;
+    text-align: center;
+}
+
+/* ==========================================================================
+   LAYOUT SUPERIOR (Capa + Tabela de Metadados)
+   ========================================================================== */
+.ficha-dados-topo {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.capa-container {
+    flex-shrink: 0;
+}
+
+.ficha-moldura-capa {
+    width: 160px;
+    height: 240px;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    object-fit: cover;
+    background-color: var(--rosa-pastel-suave);
+    border: 1px solid var(--rosa-borda);
+}
+
+/* Tabela Ficha Técnica Tracejada */
+.ficha-tabela {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    border: 1px dashed var(--rosa-pastel-medio);
+    border-radius: 14px;
+    padding: 0.8rem;
+    background: #fdfdfd;
+}
+
+.ficha-linha {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px dashed #eadddf;
+}
+
+.ficha-linha.cheia {
+    grid-template-columns: 1fr;
+}
+
+.ficha-linha:last-child {
+    border-bottom: none;
+}
+
+.ficha-celula {
+    padding: 0.7rem 0.6rem;
+    font-size: 0.92rem;
+    color: var(--cinza-texto);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.ficha-celula strong {
+    color: var(--marrom-cozy);
+    flex-shrink: 0;
+    font-weight: 600;
+}
+
+/* Inputs em Linha Discretos */
+.ficha-input-texto {
+    width: 100%;
+    border: none;
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    font-size: 0.92rem;
+    color: var(--cinza-texto);
+    padding: 2px 0;
+    outline: none;
+    font-family: inherit;
+}
+
+.ficha-input-texto:focus {
+    border-bottom: 1px solid var(--marrom-claro);
+}
+
+.progresso-wrapper-input {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* Badge de Porcentagem */
+.porcentagem-tag {
+    font-size: 0.75rem;
+    color: var(--marrom-cozy);
+    background: var(--rosa-pastel-medio);
+    padding: 0.15rem 0.5rem;
+    border-radius: 6px;
+    font-weight: bold;
+    margin-left: 0.5rem;
+    white-space: nowrap;
+}
+
+/* ==========================================================================
+   SISTEMA DE ESTRELAS COZY INTERATIVAS E CORAÇÃO
+   ========================================================================== */
+.rating-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    user-select: none;
+}
+
+.estrelas-cozy-wrapper {
+    display: flex;
+    color: #dbdbdb;
+    cursor: pointer;
+    font-size: 1.35rem;
+    gap: 3px;
+}
+
+.estrela-box {
+    position: relative;
+    display: inline-block;
+    width: 1.4rem;
+    height: 1.4rem;
+    transition: transform 0.1s ease;
+}
+
+.estrela-box:hover {
+    transform: scale(1.1);
+}
+
+.estrela-box i {
+    position: absolute;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+}
+
+.estrela-box .metade-esquerda,
+.estrela-box .metade-direita {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    z-index: 5;
+}
+
+.estrela-box .metade-esquerda {
+    left: 0;
+}
+
+.estrela-box .metade-direita {
+    right: 0;
+}
+
+.estrela-box.marcada-cheia,
+.estrela-box.marcada-metade {
+    color: #ffca28;
+}
+
+.nota-num-display {
+    font-size: 0.85rem;
+    color: #666666;
+    font-weight: bold;
+}
+
+/* Coração de Favorito */
+.btn-favorito {
+    background: none;
+    border: none;
+    font-size: 1.35rem;
+    color: #dbdbdb;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease;
+    padding: 0;
+    margin-left: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.btn-favorito:hover {
+    transform: scale(1.15);
+}
+
+.btn-favorito.ativo {
+    color: #e91e63;
+}
+
+/* ==========================================================================
+   SELETOR DE FORMATO DE LEITURA
+   ========================================================================== */
+.formato-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    background: var(--rosa-pastel-suave);
+    border-radius: 14px;
+    margin-bottom: 2rem;
+    border: 1px solid #fcecee;
+}
+
+.formato-titulo {
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: var(--marrom-cozy);
+}
+
+.formato-opcoes {
+    display: flex;
+    gap: 2rem;
+}
+
+.formato-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--marrom-cozy);
+    cursor: pointer;
+}
+
+.formato-label input[type="radio"] {
+    accent-color: var(--marrom-cozy);
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+/* Botão Salvar Global */
+.acao-principal-container {
+    margin-bottom: 2.5rem;
+}
+
+.btn-salvar-ficha-global {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.9rem;
+    background-color: var(--verde-sucesso);
+    color: var(--branco);
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.15);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-salvar-ficha-global:hover {
+    background-color: var(--verde-hover);
+}
+
+.btn-salvar-ficha-global:active {
+    transform: scale(0.99);
+}
+
+/* ==========================================================================
+   SEÇÃO DE COMENTÁRIOS E MINI EDITOR COZY
+   ========================================================================== */
+.secao-comentarios {
+    margin-top: 2rem;
+    border-top: 1px solid var(--rosa-borda);
+    padding-top: 2rem;
+}
+
+.comentario-box-input {
+    display: flex;
+    flex-direction: column;
+    background: var(--rosa-pastel-claro);
+    border: 1px solid #f3ebeb;
+    border-radius: 14px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+}
+
+/* Barra de Ferramentas (Formatos + Emojis) */
+.editor-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f5eded;
+    padding: 0.6rem 0.8rem;
+    border-bottom: 1px solid #e2d5d7;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.toolbar-group {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.btn-tool {
+    background: var(--branco);
+    border: 1px solid #dcd1d3;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: var(--marrom-cozy);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.btn-tool:hover {
+    background: var(--rosa-pastel-medio);
+    border-color: var(--marrom-claro);
+}
+
+.emoji-picker-inline {
+    display: flex;
+    gap: 0.5rem;
+    background: var(--branco);
+    border: 1px solid #dcd1d3;
+    padding: 0.3rem 0.6rem;
+    border-radius: 8px;
+}
+
+.emoji-option {
+    cursor: pointer;
+    font-size: 1.05rem;
+    user-select: none;
+    transition: transform 0.1s ease;
+}
+
+.emoji-option:hover {
+    transform: scale(1.3);
+}
+
+.textarea-comentario {
+    width: 100%;
+    height: 110px;
+    border: none;
+    background: transparent;
+    padding: 1rem;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--cinza-texto);
+    resize: none;
+    outline: none;
+    box-sizing: border-box;
+    line-height: 1.5;
+}
+
+.box-action-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.6rem 0.8rem;
+    background: #fdfafb;
+    border-top: 1px solid #f9f2f3;
+}
+
+.btn-salvar-comentario {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background-color: var(--marrom-cozy);
+    color: var(--branco);
+    border: none;
+    padding: 0.5rem 1.4rem;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-salvar-comentario:hover {
+    background-color: var(--marrom-claro);
+}
+
+/* ==========================================================================
+   HISTÓRICO E TIMELINE DE COMENTÁRIOS SALVOS
+   ========================================================================== */
+.historico-comentarios {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.item-comentario {
+    background: var(--branco);
+    border-left: 4px solid var(--rosa-pastel-medio);
+    padding: 1rem 1.2rem;
+    border-radius: 0 12px 12px 0;
+    box-shadow: 0 2px 8px rgba(92, 64, 51, 0.02);
+    border: 1px solid #fdf5f6;
+    border-left: none;
+}
+
+.meta-comentario {
+    font-size: 0.78rem;
+    color: var(--cinza-subtil);
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.texto-comentario {
+    font-size: 0.95rem;
+    color: var(--cinza-texto);
+    margin: 0;
+    line-height: 1.55;
+    word-break: break-word;
+    white-space: pre-wrap;
+}
+
+.texto-comentario b {
+    font-weight: bold;
+    color: #000000;
+}
+
+.texto-comentario i {
+    font-style: italic;
+}
+
+.texto-comentario u {
+    text-decoration: underline;
+}
+
+.btn-deletar-comentario {
+    background: none;
+    border: none;
+    color: var(--vermelho-deletar);
+    opacity: 0.4;
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 0.2rem;
+    transition: opacity 0.2s ease;
+    display: flex;
+    align-items: center;
+}
+
+.btn-deletar-comentario:hover {
+    opacity: 1;
+}
+
+/* ==========================================================================
+   REGRAS DE RESPONSIVIDADE (MEDIA QUERIES)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .ficha-dados-topo {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .formato-container {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .formato-opcoes {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 480px) {
+    .ficha-linha {
+        grid-template-columns: 1fr;
+    }
+
+    .formato-opcoes {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .ficha-main {
+        padding: 1.2rem;
+    }
+}

@@ -1,0 +1,302 @@
+body {
+    background-color: #FDF8F5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #4A3525;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+/* Espaço para a Sidebar fixa caso usem flex container */
+.container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+    width: 100%;
+}
+
+/* Grid layout dividido em duas seções */
+.painel-roleta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+@media(max-width: 900px) {
+    .painel-roleta-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.card-sugestoes,
+.card-roleta-visual {
+    background: #FFF;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(92, 58, 33, 0.06);
+    border: 1px solid #F1E6DA;
+}
+
+/* Cards Horizontais de Sugestão */
+.sugestao-item-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #FFF;
+    border: 1px solid #EAEAEA;
+    padding: 12px 15px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.01);
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.sugestao-item-card:hover {
+    transform: translateY(-2px);
+    border-color: #D9B48F;
+    box-shadow: 0 4px 12px rgba(92, 58, 33, 0.06);
+}
+
+.sugestao-esquerda {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    overflow: hidden;
+}
+
+.badge-posicao {
+    background-color: #5C3A21;
+    color: #FFF;
+    min-width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.capa-sugestao-mini {
+    width: 45px;
+    height: 65px;
+    object-fit: cover;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #EEE;
+}
+
+.sugestao-detalhes {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow: hidden;
+}
+
+.sugestao-titulo {
+    margin: 0;
+    font-size: 15px;
+    color: #4A3525;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sugestao-autor {
+    margin: 0;
+    font-size: 13px;
+    color: #888;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tag-sugerido {
+    font-size: 12px;
+    color: #A67C52;
+    background-color: #FDF8F5;
+    padding: 4px 10px;
+    border-radius: 12px;
+    border: 1px solid #F1E6DA;
+}
+
+/* Área da Roleta */
+.roleta-wrapper {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    margin: 20px auto;
+}
+
+@media(max-width: 450px) {
+
+    .roleta-wrapper,
+    canvas {
+        width: 300px !important;
+        height: 300px !important;
+    }
+}
+
+canvas {
+    border-radius: 50%;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.marcador-roleta {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 25px solid #8C6239;
+    z-index: 10;
+}
+
+.controles-sorteio {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn-principal,
+.btn-secundario,
+.btn-sucesso {
+    cursor: pointer;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 24px;
+    font-size: 15px;
+    transition: filter 0.2s;
+}
+
+.btn-principal {
+    background-color: #5C3A21;
+    color: #FFF;
+    font-size: 18px;
+}
+
+.btn-secundario {
+    background-color: #FFF;
+    border: 1px solid #5C3A21;
+    color: #5C3A21;
+}
+
+.btn-sucesso {
+    background-color: #27ae60;
+    color: #FFF;
+    margin-top: 15px;
+    width: 100%;
+}
+
+.btn-deletar-sugestao {
+    background: transparent;
+    border: none;
+    color: #c0392b;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 5px 10px;
+}
+
+.btn-principal:hover,
+.btn-secundario:hover,
+.btn-sucesso:hover {
+    filter: brightness(1.1);
+}
+
+.resultado-box {
+    margin-top: 25px;
+    padding: 20px;
+    background-color: #FDF8F5;
+    border-left: 5px solid #27ae60;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.resultado-box p {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 10px 0;
+    color: #27ae60;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.msg-vazia {
+    color: #888;
+    text-align: center;
+    font-style: italic;
+    padding: 40px 0;
+}
+
+/* Cabeçalho e Barra de Pesquisa */
+.header-roleta-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-bottom: 2px solid #E6D7C3;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.header-roleta-topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.search-bar-atalho {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: #FFF;
+    border: 2px solid #D9B48F;
+    border-radius: 30px;
+    padding: 4px 6px 4px 16px;
+    box-shadow: 0 2px 8px rgba(92, 58, 33, 0.05);
+}
+
+.search-icon {
+    color: #8C6239;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+#input-pesquisa-atalho {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 15px;
+    color: #4A3525;
+    background: transparent;
+}
+
+#input-pesquisa-atalho::placeholder {
+    color: #A67C52;
+}
+
+.btn-pesquisar-atalho {
+    background-color: #5C3A21;
+    color: #FFF;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-pesquisar-atalho:hover {
+    background-color: #8C6239;
+}
