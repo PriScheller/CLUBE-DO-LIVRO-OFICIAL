@@ -1,0 +1,171 @@
+/* ==========================================
+   ESTILOS GERAIS DO PAINEL (DASHBOARD)
+   ========================================== */
+
+/* 1. TOPO FIXO (HEADER) */
+.dash-header {
+    height: 70px;
+    min-height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    background-color: var(--branco-puro);
+    border-bottom: 1px solid #f0e4e6;
+    box-shadow: 0 2px 10px rgba(92, 64, 51, 0.01);
+    box-sizing: border-box;
+}
+
+/* Barra de Pesquisa Centralizada */
+.dash-search-container {
+    flex: 1;
+    max-width: 500px;
+}
+
+.dash-search-form {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.dash-search-input {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border-radius: 20px;
+    border: 1px solid #e0d5d5;
+    font-size: 0.9rem;
+    color: var(--marrom-cozy);
+    background-color: #fcf8f5;
+    transition: all 0.3s ease;
+}
+
+.dash-search-input:focus {
+    outline: none;
+    border-color: var(--rosa-pastel-medio);
+    background-color: var(--branco-puro);
+}
+
+.dash-search-btn {
+    padding: 0.6rem 1.2rem;
+    background-color: var(--rosa-pastel-medio);
+    color: var(--marrom-cozy);
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.dash-search-btn:hover {
+    background-color: #e8b5bd;
+}
+
+/* Área de Ações do Usuário à Direita */
+.header-user-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.user-welcome-text {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--marrom-suave);
+}
+
+.btn-perfil {
+    background: none;
+    border: 1px solid var(--marrom-cozy);
+    padding: 0.5rem 1.2rem;
+    border-radius: 15px;
+    color: var(--marrom-cozy);
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.btn-perfil:hover {
+    background: var(--marrom-cozy);
+    color: var(--branco-puro);
+}
+
+/* Botão de Sair Minimalista */
+.btn-logout-header {
+    background: none;
+    border: none;
+    color: #b32e2e;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-logout-header:hover {
+    background-color: #fff0f0;
+}
+
+/* 2. ÁREA CENTRAL DE CONTEÚDO (DASH-MAIN) */
+.dash-content-wrapper {
+    max-width: 1000px;
+    margin: 1.5rem auto;
+    width: 100%;
+}
+
+.welcome-banner {
+    background-color: var(--branco-puro);
+    padding: 2.5rem 2rem;
+    border-radius: 25px;
+    border-left: 6px solid var(--rosa-pastel-medio);
+    text-align: center;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 4px 20px rgba(92, 64, 51, 0.02);
+}
+
+.welcome-banner h2 {
+    margin: 0 0 0.5rem 0;
+    color: var(--marrom-cozy);
+    font-size: 1.7rem;
+}
+
+.welcome-banner p {
+    color: var(--marrom-suave);
+    margin: 0;
+    font-size: 1.05rem;
+}
+
+/* Grid de Atalhos Responsivo */
+.grid-atalhos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+}
+
+.card-atalho {
+    background-color: var(--branco-puro);
+    padding: 3.5rem 2rem;
+    border-radius: 25px;
+    border: 2px solid #f2e6e8;
+    text-align: center;
+    text-decoration: none;
+    color: var(--marrom-cozy);
+    font-weight: 700;
+    font-size: 1.3rem;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 4px 12px rgba(92, 64, 51, 0.01);
+}
+
+.card-atalho:hover {
+    transform: translateY(-5px);
+    border-color: var(--rosa-pastel-medio);
+    box-shadow: 0 8px 25px rgba(243, 198, 206, 0.25);
+}
+
+.card-atalho span {
+    display: block;
+    font-size: 3.5rem;
+    margin-bottom: 1.2rem;
+}

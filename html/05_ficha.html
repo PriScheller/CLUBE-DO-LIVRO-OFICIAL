@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Clube - Ficha de Leitura</title>
+    <link rel="stylesheet" href="../css/11_global.css">
+    <link rel="stylesheet" href="../css/05_ficha.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="layout-interno">
+    <aside class="cozy-sidebar">
+        <div class="sidebar-logo">
+            <h2>📖 Meu Clube</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="02_dashboard.html" class="nav-link">
+                        <i class="fa-solid fa-chart-simple"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="04_estante.html" class="nav-link">
+                        <i class="fa-solid fa-book"></i> Estante
+                    </a>
+                </li>
+                <li>
+                    <a href="06_clubes.html" class="nav-link">
+                        <i class="fa-solid fa-users"></i> Clubes
+                    </a>
+                </li>
+                <li>
+                    <a href="09_perfil.html" class="nav-link">
+                        <i class="fa-solid fa-user-gear"></i> Perfil
+                    </a>
+                </li>
+                <li>
+                    <a href="10_configuracoes.html" class="nav-link">
+                        <i class="fa-solid fa-gear"></i> Configurações
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <div class="main-content">
+
+        <header class="dash-header">
+            <div class="header-title-context">
+                <h1 style="cursor: pointer;" onclick="window.location.href='04_estante.html'">📖 Ficha de Leitura</h1>
+            </div>
+
+            <div class="dash-actions">
+                <span class="user-welcome">Olá, Pri Scheller ✨</span>
+                <a href="09_perfil.html" class="btn-perfil-header">Perfil</a>
+                <a href="04_estante.html" class="btn-voltar-painel" title="Voltar para a Estante">
+                    <i class="fa-solid fa-arrow-left"></i> Voltar
+                </a>
+            </div>
+        </header>
+
+        <main class="ficha-main">
+
+            <div class="ficha-dados-topo">
+                <div class="capa-container">
+                    <img src="" alt="Capa do Livro" class="ficha-moldura-capa" id="ficha-capa">
+                </div>
+
+                <div class="ficha-tabela">
+                    <div class="ficha-linha cheia">
+                        <div class="ficha-celula"><strong>Título:</strong> <span id="txt-titulo">Carregando...</span>
+                        </div>
+                    </div>
+                    <div class="ficha-linha cheia">
+                        <div class="ficha-celula"><strong>Autor:</strong> <span id="txt-autor">Carregando...</span>
+                        </div>
+                    </div>
+                    <div class="ficha-linha">
+                        <div class="ficha-celula"><strong>Editora:</strong> <span id="txt-editora">Carregando...</span>
+                        </div>
+                        <div class="ficha-celula">
+                            <strong>Edição:</strong>
+                            <input type="text" class="ficha-input-texto" id="input-edicao" placeholder="Ex: 1ª Ed.">
+                        </div>
+                    </div>
+                    <div class="ficha-linha">
+                        <div class="ficha-celula"><strong>Gênero:</strong> <span id="txt-genero">Carregando...</span>
+                        </div>
+                        <div class="ficha-celula">
+                            <strong>Páginas Totais:</strong>
+                            <input type="number" class="ficha-input-texto" id="input-paginas" placeholder="Ex: 320">
+                        </div>
+                    </div>
+                    <div class="ficha-linha">
+                        <div class="ficha-celula">
+                            <strong>Página Atual:</strong>
+                            <div class="progresso-wrapper-input">
+                                <input type="number" class="ficha-input-texto" id="input-pag-atual"
+                                    placeholder="Ex: 45">
+                                <span class="porcentagem-tag" id="label-porcentagem">0% lido</span>
+                            </div>
+                        </div>
+                        <div class="ficha-celula">
+                            <strong>Início:</strong>
+                            <input type="date" class="ficha-input-texto" id="input-data-inicio">
+                        </div>
+                    </div>
+                    <div class="ficha-linha cheia">
+                        <div class="ficha-celula">
+                            <strong>Término:</strong>
+                            <input type="date" class="ficha-input-texto" id="input-data-termino">
+                        </div>
+                    </div>
+
+                    <div class="ficha-linha cheia">
+                        <div class="ficha-celula rating-container">
+                            <strong>Avaliação:</strong>
+                            <div class="estrelas-cozy-wrapper" id="estrelas-interativas-container">
+                                <div class="estrela-box" data-index="1">
+                                    <div class="metade-esquerda"></div>
+                                    <div class="metade-direita"></div>
+                                    <i class="fa-regular fa-star"></i>
+                                </div>
+                                <div class="estrela-box" data-index="2">
+                                    <div class="metade-esquerda"></div>
+                                    <div class="metade-direita"></div>
+                                    <i class="fa-regular fa-star"></i>
+                                </div>
+                                <div class="estrela-box" data-index="3">
+                                    <div class="metade-esquerda"></div>
+                                    <div class="metade-direita"></div>
+                                    <i class="fa-regular fa-star"></i>
+                                </div>
+                                <div class="estrela-box" data-index="4">
+                                    <div class="metade-esquerda"></div>
+                                    <div class="metade-direita"></div>
+                                    <i class="fa-regular fa-star"></i>
+                                </div>
+                                <div class="estrela-box" data-index="5">
+                                    <div class="metade-esquerda"></div>
+                                    <div class="metade-direita"></div>
+                                    <i class="fa-regular fa-star"></i>
+                                </div>
+                            </div>
+                            <span class="nota-num-display" id="nota-display-texto">(0.0)</span>
+
+                            <button class="btn-favorito" id="btn-favorito-coracao" type="button"
+                                title="Favoritar Livro">
+                                <i class="fa-regular fa-heart" id="icone-coracao"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="formato-container">
+                <span class="formato-titulo">Formato da Leitura:</span>
+                <div class="formato-opcoes">
+                    <label class="formato-label">
+                        <input type="radio" name="formatoLeitura" value="Livro Físico" checked>
+                        <span>Livro Físico</span>
+                    </label>
+                    <label class="formato-label">
+                        <input type="radio" name="formatoLeitura" value="E-reader">
+                        <span>E-reader</span>
+                    </label>
+                    <label class="formato-label">
+                        <input type="radio" name="formatoLeitura" value="Audiobook">
+                        <span>Audiobook</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="acao-principal-container">
+                <button class="btn-salvar-ficha-global" id="btn-salvar-ficha-inteira">
+                    <i class="fa-solid fa-floppy-disk"></i> Salvar Alterações da Ficha
+                </button>
+            </div>
+
+            <section class="secao-comentarios">
+                <h3 class="subtitulo-ficha"><i class="fa-solid fa-pen-nib"></i> Resumo e Comentários do Livro</h3>
+
+                <div class="comentario-box-input">
+                    <div class="editor-toolbar">
+                        <div class="toolbar-group">
+                            <button class="btn-tool" id="btn-format-b" type="button" title="Negrito"><b>B</b></button>
+                            <button class="btn-tool" id="btn-format-i" type="button" title="Itálico"><i>I</i></button>
+                            <button class="btn-tool" id="btn-format-u" type="button"
+                                title="Sublinhado"><u>U</u></button>
+                        </div>
+                        <div class="emoji-picker-inline">
+                            <span class="emoji-option" role="button">📖</span>
+                            <span class="emoji-option" role="button">✨</span>
+                            <span class="emoji-option" role="button">❤️</span>
+                            <span class="emoji-option" role="button">😢</span>
+                            <span class="emoji-option" role="button">😮</span>
+                            <span class="emoji-option" role="button">👑</span>
+                            <span class="emoji-option" role="button">🔍</span>
+                        </div>
+                    </div>
+
+                    <textarea class="textarea-comentario" id="textarea-novo-comentario"
+                        placeholder="Escreva suas impressões de leitura ou selecione o texto para formatar..."></textarea>
+
+                    <div class="box-action-footer">
+                        <button class="btn-salvar-comentario" id="btn-adicionar-comentario" type="button">
+                            <i class="fa-solid fa-plus"></i> Adicionar Comentário
+                        </button>
+                    </div>
+                </div>
+
+                <div class="historico-comentarios" id="container-historico-comentarios">
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/11_sidebar.js"></script>
+    <script type="module" src="../js/05_ficha.js"></script>
+</body>
+
+</html>

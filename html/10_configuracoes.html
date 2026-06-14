@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações - Clube do Livro</title>
+    <link rel="stylesheet" href="../css/11_global.css">
+    <link rel="stylesheet" href="../css/10_configuracoes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="layout-interno">
+    <aside class="cozy-sidebar">
+        <div class="sidebar-logo">
+            <h2>📖 Meu Clube</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="02_dashboard.html" class="nav-link">
+                        <i class="fa-solid fa-chart-simple"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="04_estante.html" class="nav-link">
+                        <i class="fa-solid fa-book"></i> Estante
+                    </a>
+                </li>
+                <li>
+                    <a href="06_clubes.html" class="nav-link">
+                        <i class="fa-solid fa-users"></i> Clubes
+                    </a>
+                </li>
+                <li>
+                    <a href="09_perfil.html" class="nav-link">
+                        <i class="fa-solid fa-user-gear"></i> Perfil
+                    </a>
+                </li>
+                <li>
+                    <a href="10_configuracoes.html" class="nav-link">
+                        <i class="fa-solid fa-gear"></i> Configurações
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <div class="container-config">
+        <header class="config-header">
+            <h1><i class="fa-solid fa-sliders"></i> Configurações do Sistema</h1>
+            <p>Gerencie suas preferências, notificações e segurança da conta.</p>
+        </header>
+
+        <div class="config-grid">
+
+            <section class="card-config">
+                <h2><i class="fa-solid fa-lock"></i> Segurança da Conta</h2>
+                <form id="form-seguranca" class="form-cozy-config">
+                    <div class="grupo-campo-config">
+                        <label for="input-email-atual">E-mail Cadastrado</label>
+                        <input type="email" id="input-email-atual" disabled class="input-cozy-disabled">
+                    </div>
+
+                    <div class="grupo-campo-config">
+                        <label for="input-nova-senha">Nova Senha</label>
+                        <input type="password" id="input-nova-senha"
+                            placeholder="Digite a nova senha (mínimo 6 caracteres)" class="input-cozy">
+                    </div>
+
+                    <button type="submit" id="btn-atualizar-senha" class="btn-config-acao">
+                        <i class="fa-solid fa-key"></i> Atualizar Senha
+                    </button>
+                </form>
+            </section>
+
+            <section class="card-config">
+                <h2><i class="fa-solid fa-bell"></i> Notificações do Clube</h2>
+                <div class="opcoes-toggle-container">
+
+                    <div class="toggle-item">
+                        <div class="toggle-info">
+                            <span class="toggle-titulo">Sorteio de Livros</span>
+                            <span class="toggle-descricao">Avisar por e-mail quando a roleta escolher um novo
+                                livro.</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="chk-notif-roleta" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-item">
+                        <div class="toggle-info">
+                            <span class="toggle-titulo">Mensagens do Chat</span>
+                            <span class="toggle-descricao">Receber alertas de novas mensagens nos fóruns dos
+                                clubes.</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="chk-notif-chat">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-item">
+                        <div class="toggle-info">
+                            <span class="toggle-titulo">Privacidade do Perfil</span>
+                            <span class="toggle-descricao">Permitir que outros membros vejam minhas estatísticas de
+                                leitura.</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="chk-privacidade-perfil" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="card-config">
+                <h2><i class="fa-solid fa-palette"></i> Aparência e Leitura</h2>
+                <div class="form-cozy-config">
+                    <div class="grupo-campo-config">
+                        <label for="select-tamanho-fonte">Tamanho da Fonte das Resenhas</label>
+                        <select id="select-tamanho-fonte" class="select-cozy">
+                            <option value="padrone">Padrão (14px)</option>
+                            <option value="medio">Confortável (16px)</option>
+                            <option value="grande">Acessível (18px)</option>
+                        </select>
+                    </div>
+
+                    <div class="toggle-item layout-tema-box">
+                        <div class="toggle-info">
+                            <span class="toggle-titulo">Modo Noturno Aconchegante</span>
+                            <span class="toggle-descricao">Substitui o fundo claro por tons suaves de café
+                                escuro.</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="chk-modo-noturno">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card-config card-perigo">
+                <h2><i class="fa-solid fa-triangle-exclamation"></i> Zona de Perigo</h2>
+                <div class="perigo-conteudo">
+                    <p>Ao excluir sua conta, todo o seu histórico de leitura, resenhas deixadas e participação em clubes
+                        serão permanentemente apagados do nosso banco de dados.</p>
+                    <button type="button" id="btn-deletar-conta" class="btn-perigo">
+                        <i class="fa-solid fa-user-xmark"></i> Excluir Minha Conta
+                    </button>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="../js/11_sidebar.js"></script>
+    <script src="../js/10_configuracoes.js" type="module"></script>
+
+</body>
+
+</html>
